@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 // import $axios from '@/plugins/ajax'
-import {dynamicRouters} from '@/router/index'
+import { dynamicRouters } from '@/router/index'
 
 Vue.use(Vuex)
 
@@ -31,7 +31,7 @@ const store = new Vuex.Store({
 			return !state.userInfo.uid ? state.staticMenuList : state.staticMenuList.concat(state.dynamicMenuList)
 		},
 		// 设置用户动态路由
-		dynamicRouters: state => {
+		userDynamicRouters: state => {
 			return !state.userInfo.uid ? [] : dynamicRouters
 		}
 	},

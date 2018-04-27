@@ -49,10 +49,6 @@ export const staticRouters = [{
 	path: '/Register',
 	name: 'Register',
 	component: Register
-}, {
-	path: '*',
-	name: '404',
-	component: NotFound
 }]
 
 /**
@@ -88,6 +84,10 @@ export const dynamicRouters = [{
 	meta: {
 		name: '个人中心'
 	}
+}, {
+  path: '*',
+  name: '404',
+  component: NotFound
 }]
 
 export default new Router({

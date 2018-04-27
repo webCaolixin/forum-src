@@ -1,9 +1,9 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
+import App from './App'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
-import App from './App'
 import router from './router'
 import store from './store/index.js'
 
@@ -14,10 +14,9 @@ Vue.config.productionTip = false
 router.beforeEach((to, from, next) => {
 	let userUid = localStorage.getItem('userUuid')
 	if (userUid !== null) {
-		// 有登录信息，说明已登录，直接跳转到目标页
 		if (!store.state.userInfo.uid) {
 			store.commit('SET_USER_INFO', userUid)
-			router.addRoutes(store.getters.dynamicRouters)
+			router.addRoutes(store.getters.userDynamicRouters)
 		}
 		next()
 	} else {
