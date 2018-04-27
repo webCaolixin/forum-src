@@ -12,7 +12,7 @@
 		</ul>
 		<ul class="tool-bar">
 			<li class="tool-item" v-if="!this.userUid"><a href="#/Register">注册</a></li>
-			<li class="tool-item"><a :href="logInOut.href" @click="handleLogInOut">{{logInOut.name}}</a></li>
+			<li class="tool-item"><a @click="handleLogInOut">{{logInOut.name}}</a></li>
 		</ul>
 	</section>
 </template>
@@ -34,12 +34,12 @@ export default {
 		}),
 		...mapGetters(['userStatusMenu']),
 		logInOut() {
-			return this.userUid ? {href: '#', name: '退出'} : {href: '#/Login', name: '登录'}
+			return this.userUid ? {type: 'logOut', name: '退出'} : {type: 'Login', name: '登录'}
 		}
 	},
 	methods: {
 		handleLogInOut() {
-			if (this.logInOut.href === '#') {
+			if (this.logInOut.type === 'logOut') {
 				this.$confirm('确定退出当前登录用户？', '提示', {
 					confirmButtonText: '退出',
 					cancelButtonText: '取消',
