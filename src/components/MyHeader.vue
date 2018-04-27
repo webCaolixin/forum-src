@@ -49,8 +49,8 @@ export default {
 					this.$store.commit('SET_USER_INFO', '')
 					this.$message.info('登录已退出！')
 					setTimeout(() => {
-						this.$router.push('/Home')
-						window.location.reload()
+						// this.$router.push('/Home')
+						window.location.reload('/Home')
 					}, 500)
 				}).catch(() => {
 					this.$message.info('退出操作已取消！')
