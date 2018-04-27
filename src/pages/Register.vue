@@ -2,7 +2,7 @@
 	<section id="register">
 		<div class="register-wrapper">
 			<div id="register-form-wrapper">
-				<h1 class="register-title">注册</h1>
+				<h1 class="register-title">球迷联盟·注册</h1>
 				<el-form ref="registerForm" :model="registerForm" :rules="registerFormRules">
 					<el-form-item prop="username">
 						<el-input v-model="registerForm.username" placeholder="用户名">

@@ -2,7 +2,7 @@
 	<section id="login">
 		<div class="login-wrapper">
 			<div id="login-form-wrapper">
-				<h1 class="login-title">篮球联盟</h1>
+				<h1 class="login-title">球迷联盟·登录</h1>
 				<el-form ref="loginForm" :model="loginForm" :rules="loginFormRules">
 					<el-form-item prop="username">
 						<el-input v-model="loginForm.username" placeholder="用户名">
