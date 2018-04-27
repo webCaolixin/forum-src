@@ -61,7 +61,7 @@ export default {
 		}
 	},
 	created() {
-		console.log(this.$router)
+		console.log('render header...')
 	}
 }
 </script>

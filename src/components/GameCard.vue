@@ -28,7 +28,10 @@
 				<el-col :span="20">
 					<el-col :span="5" class="grid-content">描述：</el-col>
 					<el-col :span="15" class="grid-content">描述描述描述描述描述描述描述描述描述描述描述</el-col>
-					<el-button :span="4" size="small" type="primary" plain class="join-in">参加</el-button>
+					<el-button
+            :span="4" size="small" type="primary" plain
+            class="join-in"
+            @click="handleJoinIn">参加</el-button>
 				</el-col>
 			</el-row>
 		</el-card>
@@ -48,6 +51,8 @@
 </template>
 
 <script>
+  import { mapState } from 'vuex'
+
 	export default {
 		data() {
 			return {
@@ -55,9 +60,18 @@
 		},
 		props: {
 		},
+		computed: {
+      ...mapState({
+        userId: state => state.userInfo.uid
+      })
+    },
 		methods: {
-			handleSelect(key, keyPath) {
-        console.log(key, keyPath);
+      handleJoinIn() {
+        if (this.userId) {
+          this.$message.info('已登录！')
+        } else {
+          this.$message.warning('请先登录系统！')
+        }
       },
       handleSizeChange() {
       },

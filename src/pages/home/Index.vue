@@ -1,33 +1,33 @@
 <template>
   <section id="index">
     <main class="main-content">
+      <el-row class="publishGameBtnBox">
+        <el-button
+          plain
+          type="primary"
+          @click="publishGame">发布比赛</el-button>
+      </el-row>
       <el-row>
-        <el-col :span="4" class="publishGameBtn-box">
-          <el-button
-            plain
-            type="primary"
-            class="publishGameBtn"
-            @click="publishGame">发布比赛</el-button>
-        </el-col>
-        <el-col :span="20">
-          <game-card></game-card>
-        </el-col>
+        <game-card></game-card>
       </el-row>
     </main>
   </section>
 </template>
 
 <script>
+  import { mapState } from 'vuex'
   import MyHeader from '@/components/MyHeader'
   import MyFooter from '@/components/MyFooter'
   import GameCard from '@/components/GameCard'
-
   export default {
     data() {
       return {
-        activeIndex: '1',
-        activeIndex2: '1'
       };
+    },
+    computed: {
+      ...mapState({
+        userId: state => state.userInfo.uid
+      })
     },
     components: {
       MyHeader,
@@ -36,7 +36,11 @@
     },
     methods: {
       publishGame() {
-        this.$message.info('登陆后才能发布比赛哦！')
+        if (this.userId) {
+          this.$message.info('已登录！')
+        } else {
+          this.$message.warning('登陆后才能发布比赛哦！')
+        }
       }
     }
   }
@@ -48,6 +52,8 @@
     width 80%
     padding 20px
     margin 0 auto 60px
-  .publishGameBtn
-    width 80%
+  .publishGameBtnBox
+    margin-bottom 10px
+    .el-button
+      width 130px
 </style>
