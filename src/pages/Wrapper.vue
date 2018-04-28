@@ -44,16 +44,16 @@
 </script>
 
 <style lang="stylus">
-.el-header
-    border-bottom 1px solid #ebebeb
-.el-main
-  padding 0
-  padding-top 2px
-footer
-  width 100%
-  position fixed
-  bottom 0px
-  padding 15px
-  background #fff
-  border-top 1px solid #ebebeb
+  .el-header
+      border-bottom 1px solid #ebebeb
+  .el-main
+    padding 0
+    padding-top 2px
+  footer
+    width 100%
+    position fixed
+    bottom 0px
+    padding 15px
+    background #fff
+    border-top 1px solid #ebebeb
 </style>

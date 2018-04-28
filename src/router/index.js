@@ -55,19 +55,19 @@ export const staticRouters = [{
  * "个人中心" 子路由
  */
 const myCenterRouter = [{
-	path: 'myGame',
-	name: 'myGame',
-	component: MyGame,
-	meta: {
-		name: '我发布的比赛'
-	}
+  path: 'myGame',
+  name: 'myGame',
+  component: MyGame,
+  meta: {
+    name: '我发布的比赛'
+  }
 }, {
-	path: 'myPosttings',
-	name: 'myPosttings',
-	component: MyPosttings,
-	meta: {
-		name: '我的帖子'
-	}
+  path: 'myPosttings',
+  name: 'myPosttings',
+  component: MyPosttings,
+  meta: {
+    name: '我的帖子'
+  }
 }]
 
 /**
@@ -78,6 +78,7 @@ export const dynamicRouters = [{
 	component: Wrapper,
 	children: [{
 		path: '',
+		name: 'MyCenter',
 		component: MyCenter,
 		children: myCenterRouter
 	}],

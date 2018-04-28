@@ -13,12 +13,14 @@ Vue.config.productionTip = false
 // 路由跳转前，登录状态判断
 router.beforeEach((to, from, next) => {
 	let userUid = localStorage.getItem('userUuid')
+  // localStorage中userUid不为空，说明用户已登录
 	if (userUid !== null) {
+    // vue中state.userInfo.uid为空，说明用户刷新了页面
 		if (!store.state.userInfo.uid) {
-			store.commit('SET_USER_INFO', userUid)
-			router.addRoutes(store.getters.userDynamicRouters)
-		}
-		next()
+      store.commit('SET_USER_INFO', userUid)// 重新提交mutation，设置state.userInfo.uid
+      router.addRoutes(store.getters.userDynamicRouters)// 添加动态路由
+    }
+    next()
 	} else {
 		// 没有登录信息，说明没有登录
 		if (to.path.indexOf('/MyCenter') !== -1) {
