@@ -9,7 +9,7 @@ const Home = () => import('@/pages/home/Index')
 const DiscussZone = () => import('@/pages/discussZone/Index')
 const MyCenter = () => import('@/pages/myCenter/Index')
 const MyGame = () => import('@/pages/myCenter/myGame')
-const MyPosttings = () => import('@/pages/myCenter/MyPosttings')
+const MyPostings = () => import('@/pages/myCenter/MyPostings')
 
 Vue.use(Router)
 
@@ -62,9 +62,9 @@ const myCenterRouter = [{
     name: '我发布的比赛'
   }
 }, {
-  path: 'myPosttings',
-  name: 'myPosttings',
-  component: MyPosttings,
+  path: 'myPostings',
+  name: 'myPostings',
+  component: MyPostings,
   meta: {
     name: '我的帖子'
   }

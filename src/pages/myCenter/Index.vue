@@ -11,7 +11,7 @@
 							<i class="el-icon-star-on"></i>
 							<span slot="title">我的比赛</span>
 						</el-menu-item>
-						<el-menu-item index="/MyCenter/myPosttings">
+						<el-menu-item index="/MyCenter/myPostings">
 							<i class="el-icon-news"></i>
 							<span slot="title">我的帖子</span>
 						</el-menu-item>
