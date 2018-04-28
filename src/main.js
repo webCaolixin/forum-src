@@ -12,8 +12,8 @@ Vue.config.productionTip = false
 
 // 路由跳转前，登录状态判断
 router.beforeEach((to, from, next) => {
-	let userUid = localStorage.getItem('userUuid')
-  // localStorage中userUid不为空，说明用户已登录
+	let userUid = sessionStorage.getItem('userUuid')
+  // sessionStorage中userUid不为空，说明用户已登录
 	if (userUid !== null) {
     // vue中state.userInfo.uid为空，说明用户刷新了页面
 		if (!store.state.userInfo.uid) {

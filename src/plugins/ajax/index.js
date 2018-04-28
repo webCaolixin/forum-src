@@ -57,7 +57,7 @@ function checkCode(res) {
 
 function checkTimeout(res) {
   if (res && res.data === 'timeout') {
-    localStorage.clear()
+    sessionStorage.clear()
     window.location.reload('/Home');
     return res
   } else {

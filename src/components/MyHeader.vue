@@ -45,7 +45,7 @@ export default {
 					cancelButtonText: '取消',
 					type: 'info'
 				}).then(() => {
-					localStorage.clear()
+          sessionStorage.clear()
 					this.$store.commit('SET_USER_INFO', '')
 					this.$message.info('登录已退出！')
 					setTimeout(() => {

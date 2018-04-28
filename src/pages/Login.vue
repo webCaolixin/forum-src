@@ -57,7 +57,7 @@
 				this.$refs.loginForm.validate((valid) => {
 					if (valid) {
 						this.$store.commit('SET_USER_INFO', '1234567890')
-            localStorage.setItem('userUuid', '1234567890')
+            sessionStorage.setItem('userUuid', '1234567890')
 						this.$router.addRoutes(this.userDynamicRouters)
 						this.$router.push('/Home')
 					} else {
