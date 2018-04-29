@@ -1,6 +1,6 @@
 <template>
 	<section id="myPublishedPostingsCard">
-		<el-card v-for="i in 3" :key="i">
+		<el-card class="myPubPostCard" v-for="i in 3" :key="i">
 			<el-row class="posting-title">
 				<el-col>
 					标题：<span class="title-content">湖人真的很强！强到飞起！</span>
@@ -40,6 +40,8 @@ export default {
 
 <style lang="stylus" scoped>
 #myPublishedPostingsCard
+	.myPubPostCard
+		margin-bottom 12px
 	.posting-title, .posting-detail
 		text-align center
 		padding 5px 10px

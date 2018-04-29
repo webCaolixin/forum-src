@@ -1,6 +1,6 @@
 <template>
 	<section id="myReplyCard">
-		<el-card  v-for="i in 5" :key="i">
+		<el-card class="myReplyCard"  v-for="i in 5" :key="i">
 			<el-row class="reply-title">
 				<el-col>
 					来自：<span class="title-content">湖人真的很强！强到飞起！</span>
@@ -41,6 +41,8 @@ export default {
 
 <style lang="stylus" scoped>
 #myReplyCard
+	.myReplyCard
+		margin-bottom 12px
 	.reply-title, .reply-detail
 		text-align center
 		padding 5px 10px

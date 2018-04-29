@@ -1,15 +1,19 @@
 <template>
-	<section id="">
-		<el-form ref="form" :model="publishGameForm" label-width="100px">
+	<section id="publishGameForm">
+		<el-form
+			ref="publishGameForm"
+			:model="publishGameForm"
+			:rules="publishGameFormRules"
+			label-width="100px">
 			<el-form-item label="比赛类型：">
 				<el-select v-model="publishGameForm" placeholder="请选择比赛类型">
-					<el-option label="区域一" value="shanghai"></el-option>
+					<el-option label="类型一" value="leixingyi"></el-option>
 				</el-select>
 			</el-form-item>
 
 			<el-form-item label="比赛场地：">
 				<el-select v-model="publishGameForm" placeholder="请选择比赛场地">
-					<el-option label="区域一" value="shanghai"></el-option>
+					<el-option label="区域一" value="quyuyi"></el-option>
 				</el-select>
 			</el-form-item>
 
@@ -30,11 +34,6 @@
 			<el-form-item label="描述：">
 				<el-input type="textarea" v-model="publishGameForm.describe" placeholder="请填写比赛具体信息"></el-input>
 			</el-form-item>
-
-			<el-form-item>
-				<el-button type="primary" plain @click="reset">重 置</el-button>
-				<el-button type="primary" @click="publishGame">发 布</el-button>
-			</el-form-item>
 		</el-form>
 		<el-row>
 			<el-col>
@@ -52,6 +51,8 @@
 				locationList: [],
 				publishGameForm: {
 					describe: ''
+				},
+				publishGameFormRules: {
 				}
 			}
 		},

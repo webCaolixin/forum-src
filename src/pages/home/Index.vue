@@ -11,6 +11,18 @@
         <game-card></game-card>
       </el-row>
     </main>
+
+    <el-dialog
+      title="发布比赛"
+      top="12vh"
+      :visible.sync="publishGameDialog">
+      <publish-game-form></publish-game-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="publishGameDialog = false">取 消</el-button>
+        <el-button type="primary" plain @click="resetPublishGame">重 置</el-button>
+        <el-button type="primary" @click="savePublishGame">发 布</el-button>
+      </span>
+    </el-dialog>
   </section>
 </template>
 
@@ -19,9 +31,11 @@
   import MyHeader from '@/components/MyHeader'
   import MyFooter from '@/components/MyFooter'
   import GameCard from '@/components/GameCard'
+  import PublishGameForm from '@/components/PublishGameForm'
   export default {
     data() {
       return {
+        publishGameDialog: false
       };
     },
     computed: {
@@ -32,15 +46,21 @@
     components: {
       MyHeader,
       MyFooter,
-      GameCard
+      GameCard,
+      PublishGameForm
     },
     methods: {
       publishGame() {
         if (this.userId) {
-          this.$message.info('已登录！')
+          this.publishGameDialog = true
         } else {
           this.$message.warning('登陆后才能发布比赛哦！')
         }
+      },
+      savePublishGame() {
+        this.publishGameDialog = false
+      },
+      resetPublishGame() {
       }
     }
   }
