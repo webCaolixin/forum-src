@@ -6,6 +6,8 @@
           plain
           type="primary"
           @click="publishGame">发布比赛</el-button>
+          <el-button class="search-btn" type="primary" size="small" plain>搜 索</el-button>
+          <el-input class="search-input" size="small" placeholder="搜索您要的比赛..."></el-input>
       </el-row>
       <el-row>
         <game-card></game-card>
@@ -69,11 +71,17 @@
 <style lang="stylus" scoped>
 #index
   .main-content
-    width 80%
+    width 70%
     padding 20px
     margin 0 auto 60px
   .publishGameBtnBox
     margin-bottom 10px
     .el-button
       width 130px
+    .search-input, .search-btn
+      float right
+    .search-btn
+      width 80px
+    .search-input
+      width 300px
 </style>
