@@ -18,7 +18,7 @@
 					<i class="fa fa-thumbs-o-down" aria-hidden="true" title="被踩数"> {{100}}</i>
 				</el-col>
 				<el-col :span="12" class="delete-btn">
-					<el-button type="primary" size="small" plain>删除</el-button>
+					<el-button type="primary" size="mini" plain>删除</el-button>
 				</el-col>
 			</el-row>
 		</el-card>
@@ -46,9 +46,8 @@ export default {
 		text-align center
 		padding 5px 10px
 	.posting-footer
-		margin-top 10px
 		.icon-box
-			line-height 32px
+			line-height 28px
 			.fa
 				display inline-block
 				margin-right 15px

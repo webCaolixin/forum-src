@@ -11,10 +11,10 @@
 					</el-row>
 					<el-row class="post-footer">
 						<el-col :span="12" class="comment-num">
-							<i class="fa fa-commenting-o" aria-hidden="true" title="评论数">{{100}}</i>
+							<i class="fa fa-commenting-o" aria-hidden="true" title="评论数"> {{100}}</i>
 						</el-col>
 						<el-col :span="12" class="post-time">
-							<i class="fa fa-clock-o" aria-hidden="true" title="发帖时间">{{'0000-00-00 00:00:00'}}</i>
+							<i class="fa fa-clock-o" aria-hidden="true" title="发帖时间"> {{'0000-00-00 00:00:00'}}</i>
 						</el-col>
 					</el-row>
 				</el-col>
@@ -38,23 +38,19 @@
 
 <style lang="stylus" scoped>
 #postingCardBox
-	.postingCard
-		margin-bottom 12px
-		.post-userPic-box
-			text-align center
-			 .post-user-pic
-					height 62px
-		.post-title, .post-footer
-			padding 5px 10px
-		.post-title
-			text-align center
-		.post-footer
-			.comment-num, .post-time
-				.fa
-					display inline-block
-					margin-right 15px
-			.comment-num
-				text-align left
-			.post-time
-				text-align right
+  .postingCard
+    margin-bottom 12px
+    .post-userPic-box
+      text-align center
+      .post-user-pic
+        height 62px
+    .post-title, .post-footer
+      padding 5px 10px
+    .post-title
+      text-align center
+    .post-footer
+      .comment-num
+        text-align left
+      .post-time
+        text-align right
 </style>

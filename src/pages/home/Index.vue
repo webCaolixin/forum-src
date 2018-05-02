@@ -17,6 +17,7 @@
     <el-dialog
       title="发布比赛"
       top="12vh"
+      width="700px"
       :visible.sync="publishGameDialog">
       <publish-game-form></publish-game-form>
       <span slot="footer" class="dialog-footer">
@@ -81,7 +82,7 @@
     .search-input, .search-btn
       float right
     .search-btn
-      width 80px
+      width 60px
     .search-input
       width 300px
 </style>

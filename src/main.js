@@ -17,8 +17,8 @@ router.beforeEach((to, from, next) => {
 	if (userUid) {
     // vue中state.userInfo.uid为空，说明用户刷新了页面
 		if (!store.state.userInfo.uid) {
-      store.commit('SET_USER_INFO', userUid)// 重新提交mutation，设置state.userInfo.uid
-      router.addRoutes(store.getters.userDynamicRouters)// 添加动态路由
+      store.commit('SET_USER_INFO', userUid)              // 重新提交mutation，设置state.userInfo.uid
+      router.addRoutes(store.getters.userDynamicRouters)  // 添加动态路由
     }
     next()
 	} else {

@@ -29,7 +29,7 @@
 					<el-col :span="5" class="grid-content">描述：</el-col>
 					<el-col :span="15" class="grid-content">描述描述描述描述描述描述描述描述描述描述描述</el-col>
 					<el-button
-            :span="4" size="small" type="primary" plain
+            :span="4" size="mini" type="primary" plain
             class="join-in"
             @click="handleJoinIn">参加</el-button>
 				</el-col>

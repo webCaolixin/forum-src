@@ -76,41 +76,43 @@
 </script>
 
 <style lang="stylus" scoped>
-	#register
-		.register-wrapper
-			display flex
-			justify-content center
-			align-items center
-			width 100%
-			height 100vh
-			background url('../assets/images/register.jpg') no-repeat center
-			background-size cover
-		#register-form-wrapper
-			width 350px
-			padding 30px
-			margin 0 auto
-			background #ffffff
-			border-radius 4px
-			box-shadow 0px 1px 12px 0px rgba(0, 0, 0, 0.2)
-			.register-title
-				text-align center
-				color #409eff
-				font-size 24px
-				font-weight lighter
-				letter-spacing 0.3em
-				margin-bottom 20px
-			.register-button-box
-				margin-top 40px
-				.register-button
-					width 100%
-			.toLogin
-				text-align right
-				margin-top 10px
-				a
-					font-size 14px
-					color #999999
-					text-decoration none
-					margin-left 15px
-					&:hover
-						color: #282828
+#register
+  .register-wrapper
+    display flex
+    justify-content center
+    align-items center
+    width 100%
+    height 100vh
+    background url('../assets/images/register.jpg') no-repeat center
+    background-size cover
+  #register-form-wrapper
+    width 350px
+    padding 30px
+    margin 0 auto
+    background #ffffff
+    border-radius 4px
+    box-shadow 0px 1px 12px 0px rgba(0, 0, 0, 0.2)
+    .fa
+      font-size 18px
+    .register-title
+      text-align center
+      color #409eff
+      font-size 24px
+      font-weight lighter
+      letter-spacing 0.3em
+      margin-bottom 20px
+    .register-button-box
+      margin-top 40px
+      .register-button
+        width 100%
+    .toLogin
+      text-align right
+      margin-top 10px
+      a
+        font-size 14px
+        color #999999
+        text-decoration none
+        margin-left 15px
+        &:hover
+          color #282828
 </style>

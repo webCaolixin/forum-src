@@ -57,10 +57,10 @@
 			login() {
 				this.$refs.loginForm.validate((valid) => {
 					if (valid) {
-						this.$store.commit('SET_USER_INFO', '1234567890')
-            sessionStorage.setItem('userUuid', '1234567890')
-						this.$router.addRoutes(this.userDynamicRouters)
-						this.$router.push('/Home')
+						this.$store.commit('SET_USER_INFO', '1234567890')   // 1.登陆成功，vuex设置用户id
+            sessionStorage.setItem('userUuid', '1234567890')    // 2.session同时存储id，手动刷新页面时用它重写vuex用户id
+						this.$router.addRoutes(this.userDynamicRouters)     // 3.追加动态路由
+						this.$router.push('/Home')                          // 4.跳转到首页
 					} else {
 						this.$message.warning('请完善登录信息！')
 						return false
@@ -74,40 +74,42 @@
 </script>
 
 <style lang="stylus" scoped>
-	#login
-		.login-wrapper
-			display flex
-			justify-content center
-			align-items center
-			width 100%
-			height 100vh
-			background url('../assets/images/login.jpg') no-repeat center
-			background-size cover
-			#login-form-wrapper
-				width 350px
-				padding 30px
-				background #ffffff
-				border-radius 4px
-				box-shadow 0px 1px 12px 0px rgba(0, 0, 0, 0.2)
-				.login-title
-					text-align center
-					color #409eff
-					font-size 24px
-					font-weight lighter
-					letter-spacing 0.3em
-					margin-bottom 20px
-				.login-button-box
-					margin-top 40px
-					.login-button
-						width 100%
-				.toRegister
-					text-align right
-					margin-top 10px
-					a
-						font-size 14px
-						color #999999
-						text-decoration none
-						margin-left 15px
-						&:hover
-							color: #282828
+#login
+  .login-wrapper
+    display flex
+    justify-content center
+    align-items center
+    width 100%
+    height 100vh
+    background url('../assets/images/login.jpg') no-repeat center
+    background-size cover
+    #login-form-wrapper
+      width 350px
+      padding 30px
+      background #ffffff
+      border-radius 4px
+      box-shadow 0px 1px 12px 0px rgba(0, 0, 0, 0.2)
+      .fa
+        font-size 18px
+      .login-title
+        text-align center
+        color #409eff
+        font-size 24px
+        font-weight lighter
+        letter-spacing 0.3em
+        margin-bottom 20px
+      .login-button-box
+        margin-top 40px
+        .login-button
+          width 100%
+      .toRegister
+        text-align right
+        margin-top 10px
+        a
+          font-size 14px
+          color #999999
+          text-decoration none
+          margin-left 15px
+          &:hover
+            color #282828
 </style>

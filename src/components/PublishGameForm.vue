@@ -32,7 +32,11 @@
 			</el-form-item>
 
 			<el-form-item label="描述：">
-				<el-input type="textarea" v-model="publishGameForm.describe" placeholder="请填写比赛具体信息"></el-input>
+				<el-input
+          type="textarea"
+          v-model="publishGameForm.describe"
+          :autosize="{minRows: 3, maxRows: 5}"
+          placeholder="请填写比赛具体信息"></el-input>
 			</el-form-item>
 		</el-form>
 		<el-row>

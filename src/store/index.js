@@ -28,10 +28,12 @@ const store = new Vuex.Store({
 	getters: {
 		// 设置用户状态功能模块
 		userStatusMenu: state => {
+		  // 根据vuex中用户id是否有值，判断返回的功能菜单模块
 			return !state.userInfo.uid ? state.staticMenuList : state.staticMenuList.concat(state.dynamicMenuList)
 		},
 		// 设置用户动态路由
 		userDynamicRouters: state => {
+		  // 根据vuex中用户id是否有值，判断返回的动态路由
 			return !state.userInfo.uid ? [] : dynamicRouters
 		}
 	},
