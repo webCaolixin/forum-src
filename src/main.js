@@ -10,27 +10,6 @@ import store from './store/index.js'
 Vue.use(ElementUI)
 Vue.config.productionTip = false
 
-// 路由跳转前，登录状态判断
-router.beforeEach((to, from, next) => {
-	let userUid = sessionStorage.getItem('userUuid')
-  // sessionStorage中userUid不为空，说明用户已登录
-	if (userUid) {
-    // vue中state.userInfo.uid为空，说明用户刷新了页面
-		if (!store.state.userInfo.uid) {
-      store.commit('SET_USER_INFO', userUid)              // 重新提交mutation，设置state.userInfo.uid
-      router.addRoutes(store.getters.userDynamicRouters)  // 添加动态路由
-    }
-    next()
-	} else {
-		// 没有登录信息，说明没有登录
-		if (to.path.indexOf('/MyCenter') !== -1) {
-			next('/Home')
-		} else {
-			next()
-		}
-	}
-});
-
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

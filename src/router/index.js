@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import store from '../store/index.js'
 
 const Wrapper = () => import('@/pages/Wrapper')
 const Login = () => import('@/pages/Login')
@@ -56,8 +57,7 @@ export const staticRouters = [{
  */
 export const myCenterRouter = [{
   path: '',
-  name: 'MyCenter',
-  component: MyGame
+  redirect: '/MyCenter/myGame'
 }, {
   path: 'myGame',
   name: 'myGame',
@@ -94,6 +94,29 @@ export const dynamicRouters = [{
   component: NotFound
 }]
 
-export default new Router({
+let router = new Router({
 	routes: staticRouters
 })
+
+// 路由跳转前，登录状态判断
+router.beforeEach((to, from, next) => {
+  let userUid = sessionStorage.getItem('userUuid')
+  // sessionStorage中userUid不为空，说明用户已登录
+  if (userUid) {
+    // vue中state.userInfo.uid为空，说明用户刷新了页面
+    if (!store.state.userInfo.uid) {
+      store.commit('SET_USER_INFO', userUid)              // 重新提交mutation，设置state.userInfo.uid
+      router.addRoutes(store.getters.userDynamicRouters)  // 添加动态路由
+    }
+    next()
+  } else {
+    // 没有登录信息，说明没有登录
+    if (to.path.indexOf('/MyCenter') !== -1) {
+      next('/Home')
+    } else {
+      next()
+    }
+  }
+});
+
+export default router
