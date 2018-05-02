@@ -7,14 +7,15 @@
 					<el-form-item prop="username">
 						<el-input v-model="loginForm.username" placeholder="用户名">
 							<template slot="prepend">
-								<i class="el-icon-menu"></i>
+                <i class="fa fa-user" aria-hidden="true"></i>
 							</template>
 						</el-input>
 					</el-form-item>
 					<el-form-item prop="password">
 						<el-input v-model="loginForm.password" placeholder="密码">
 							<template slot="prepend">
-							<i class="el-icon-menu"></i></template>
+                <i class="fa fa-lock" aria-hidden="true"></i>
+              </template>
 						</el-input>
 					</el-form-item>
 

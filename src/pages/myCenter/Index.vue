@@ -5,7 +5,7 @@
 				<el-menu
 					id="myCenter-menu"
 					:router="true"
-					default-active="1"
+					default-active="/MyCenter/myGame"
 					class="el-menu-vertical-demo">
 						<el-menu-item index="/MyCenter/myGame">
 							<i class="el-icon-star-on"></i>

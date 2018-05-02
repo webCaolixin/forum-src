@@ -14,7 +14,7 @@ Vue.config.productionTip = false
 router.beforeEach((to, from, next) => {
 	let userUid = sessionStorage.getItem('userUuid')
   // sessionStorage中userUid不为空，说明用户已登录
-	if (userUid !== null) {
+	if (userUid) {
     // vue中state.userInfo.uid为空，说明用户刷新了页面
 		if (!store.state.userInfo.uid) {
       store.commit('SET_USER_INFO', userUid)// 重新提交mutation，设置state.userInfo.uid

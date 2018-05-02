@@ -3,15 +3,18 @@
 		<h1>球迷联盟</h1>
 		<ul class="nav">
 			<li v-for="(item, index) in userStatusMenu" class="nav-item" :key="index">
-				<a
-					:href="`#${item.path}`"
-					:class="{'active-link': currentPath.indexOf(item.path)!==-1}">
+				<router-link
+					:to="`${item.path}`"
+          active-class="active-link"
+          exact-active-class="active-link">
 					{{item.name}}
-				</a>
+				</router-link>
 			</li>
 		</ul>
 		<ul class="tool-bar">
-			<li class="tool-item" v-if="!this.userUid"><a href="#/Register">注册</a></li>
+			<li class="tool-item" v-if="!this.userUid">
+        <router-link to="/Register">注册</router-link>
+      </li>
 			<li class="tool-item"><a @click="handleLogInOut">{{logInOut.name}}</a></li>
 		</ul>
 	</section>

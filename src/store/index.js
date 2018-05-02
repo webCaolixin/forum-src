@@ -22,7 +22,7 @@ const store = new Vuex.Store({
 		// 动态功能模块
 		dynamicMenuList: [{
 			name: '个人中心',
-			path: '/MyCenter/myGame'
+			path: '/MyCenter'
 		}]
 	},
 	getters: {
