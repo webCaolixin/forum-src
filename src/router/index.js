@@ -15,9 +15,31 @@ const MyPostings = () => import('@/pages/myCenter/MyPostings')
 Vue.use(Router)
 
 /**
- * 静态路由
+ * "个人中心" 子路由
  */
-export const staticRouters = [{
+export const myCenterRoutes = [{
+  path: '',
+  redirect: '/MyCenter/myGame'
+}, {
+  path: 'myGame',
+  name: 'myGame',
+  component: MyGame,
+  meta: {
+    name: '我发布的比赛'
+  }
+}, {
+  path: 'myPostings',
+  name: 'myPostings',
+  component: MyPostings,
+  meta: {
+    name: '我的帖子'
+  }
+}]
+
+/**
+ * 模块路由
+ */
+export const routes = [{
 	path: '/',
 	redirect: '/Home'
 }, {
@@ -43,51 +65,24 @@ export const staticRouters = [{
 		name: '讨论区'
 	}
 }, {
-	path: '/Login',
-	name: 'Login',
-	component: Login
-}, {
-	path: '/Register',
-	name: 'Register',
-	component: Register
-}]
-
-/**
- * "个人中心" 子路由
- */
-export const myCenterRouter = [{
-  path: '',
-  redirect: '/MyCenter/myGame'
-}, {
-  path: 'myGame',
-  name: 'myGame',
-  component: MyGame,
+  path: '/MyCenter',
+  component: Wrapper,
+  children: [{
+    path: '',
+    component: MyCenter,
+    children: myCenterRoutes
+  }],
   meta: {
-    name: '我发布的比赛'
+    name: '个人中心'
   }
 }, {
-  path: 'myPostings',
-  name: 'myPostings',
-  component: MyPostings,
-  meta: {
-    name: '我的帖子'
-  }
-}]
-
-/**
- * 动态路由
- */
-export const dynamicRouters = [{
-	path: '/MyCenter',
-	component: Wrapper,
-	children: [{
-		path: '',
-		component: MyCenter,
-		children: myCenterRouter
-	}],
-	meta: {
-		name: '个人中心'
-	}
+  path: '/Login',
+  name: 'Login',
+  component: Login
+}, {
+  path: '/Register',
+  name: 'Register',
+  component: Register
 }, {
   path: '*',
   name: '404',
@@ -95,24 +90,22 @@ export const dynamicRouters = [{
 }]
 
 let router = new Router({
-	routes: staticRouters
+	routes: routes
 })
 
 // 路由跳转前，登录状态判断
 router.beforeEach((to, from, next) => {
+  console.log('................................')
   let userUid = sessionStorage.getItem('userUuid')
-  // sessionStorage中userUid不为空，说明用户已登录
-  if (userUid) {
-    // vue中state.userInfo.uid为空，说明用户刷新了页面
-    if (!store.state.userInfo.uid) {
-      store.commit('SET_USER_INFO', userUid)              // 重新提交mutation，设置state.userInfo.uid
-      router.addRoutes(store.getters.userDynamicRouters)  // 添加动态路由
+  if (userUid) {  // sessionStorage中userUid不为空，说明用户已登录
+    if (!store.state.userInfo.uid) {              // vue中state.userInfo.uid为空，说明用户刷新了页面
+      store.commit('SET_USER_INFO', userUid)      // 重新提交mutation，设置state.userInfo.uid
     }
     next()
   } else {
     // 没有登录信息，说明没有登录
     if (to.path.indexOf('/MyCenter') !== -1) {
-      next('/Home')
+      next('/404')
     } else {
       next()
     }

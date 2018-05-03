@@ -36,7 +36,6 @@
 </template>
 
 <script>
-	import {mapGetters} from 'vuex'
 	export default {
 		data() {
 			return {
@@ -50,17 +49,13 @@
 				}
 			}
 		},
-		computed: {
-			...mapGetters(['userDynamicRouters'])
-		},
 		methods: {
 			login() {
 				this.$refs.loginForm.validate((valid) => {
 					if (valid) {
 						this.$store.commit('SET_USER_INFO', '1234567890')   // 1.登陆成功，vuex设置用户id
             sessionStorage.setItem('userUuid', '1234567890')    // 2.session同时存储id，手动刷新页面时用它重写vuex用户id
-						this.$router.addRoutes(this.userDynamicRouters)     // 3.追加动态路由
-						this.$router.push('/Home')                          // 4.跳转到首页
+						this.$router.push('/Home')                          // 3.跳转到首页
 					} else {
 						this.$message.warning('请完善登录信息！')
 						return false

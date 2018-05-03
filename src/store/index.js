@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 // import $axios from '@/plugins/ajax'
-import { dynamicRouters } from '@/router/index'
 
 Vue.use(Vuex)
 
@@ -30,11 +29,6 @@ const store = new Vuex.Store({
 		userStatusMenu: state => {
 		  // 根据vuex中用户id是否有值，判断返回的功能菜单模块
 			return !state.userInfo.uid ? state.staticMenuList : state.staticMenuList.concat(state.dynamicMenuList)
-		},
-		// 设置用户动态路由
-		userDynamicRouters: state => {
-		  // 根据vuex中用户id是否有值，判断返回的动态路由
-			return !state.userInfo.uid ? [] : dynamicRouters
 		}
 	},
 	mutations: {
@@ -42,9 +36,6 @@ const store = new Vuex.Store({
 		SET_USER_INFO(state, userInfo) {
 			// state.userInfo = Object.assign({}, state.userInfo, userInfo)
 			state.userInfo.uid = userInfo
-		},
-		// 设置动态路由
-		SET_DYNAMIC_ROUTER(state) {
 		}
 	},
 	actions: {
