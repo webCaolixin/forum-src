@@ -11,8 +11,8 @@ axios.interceptors.response.use(response => response, error => Promise.resolve(e
 axios.defaults.withCredentials = true;
 
 const globalOptions = {
-  // baseURL: window.location.protocol + '//' + window.location.host + '/',
-  baseURL: 'https://192.168.211.218/',
+  baseURL: window.location.protocol + '//' + window.location.host + '/',
+  // baseURL: 'https://192.168.211.218/',
   timeout: 60000,
   headers: {
     'axios-header': 'axios'
@@ -35,36 +35,6 @@ function convertURL(url) {
   return url;
 }
 
-function checkStatus(response) {
-  if (!response || response.status === 200 || response.status === 304) {
-    return response
-  }
-  return {
-    data: {
-      code: -404,
-      message: response.statusText,
-      data: response.statusText
-    }
-  }
-}
-
-function checkCode(res) {
-  if (res && res.data.code === -404) {
-    alert(res.data.message)
-  }
-  return res
-}
-
-function checkTimeout(res) {
-  if (res && res.data === 'timeout') {
-    sessionStorage.clear()
-    window.location.reload('/Home');
-    return res
-  } else {
-    return res
-  }
-}
-
 export default {
   basePath () {
     return globalOptions.baseURL;
@@ -76,7 +46,7 @@ export default {
     } else {
       options = globalOptions;
     }
-    return axios.post(convertURL(url), data, options).then(checkStatus).then(checkCode).then(checkTimeout).then((res) => {
+    return axios.post(convertURL(url), data, options).then((res) => {
       return res;
     })
   },
@@ -87,7 +57,18 @@ export default {
     } else {
       options = merge({}, globalOptions, {params: params});
     }
-    return axios.get(convertURL(url), options).then(checkStatus).then(checkCode).then((res) => {
+    return axios.get(convertURL(url), options).then((res) => {
+      return res;
+    })
+  },
+  delete (url, params, config) {
+    let options = {};
+    if (typeof config !== 'undefined') {
+      options = merge({}, globalOptions, {params: params}, config)
+    } else {
+      options = merge({}, globalOptions, {params: params});
+    }
+    return axios.delete(convertURL(url), options).then((res) => {
       return res;
     })
   }
