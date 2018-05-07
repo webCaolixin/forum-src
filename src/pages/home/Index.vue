@@ -6,11 +6,11 @@
           plain
           type="primary"
           @click="publishGame">发布比赛</el-button>
-          <el-button class="search-btn" type="primary" size="small" plain>搜 索</el-button>
+          <el-button class="search-btn" type="primary" size="small" plain @click="searchGame">搜 索</el-button>
           <el-input class="search-input" size="small" placeholder="搜索您要的比赛..."></el-input>
       </el-row>
       <el-row>
-        <game-card></game-card>
+        <game-card :dataList="searchResultList"></game-card>
       </el-row>
     </main>
 
@@ -19,26 +19,27 @@
       top="12vh"
       width="700px"
       :visible.sync="publishGameDialog">
-      <publish-game-form></publish-game-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="publishGameDialog = false">取 消</el-button>
-        <el-button type="primary" plain @click="resetPublishGame">重 置</el-button>
-        <el-button type="primary" @click="savePublishGame">发 布</el-button>
-      </span>
+      <publish-game-form ref="publishGameRef"></publish-game-form>
     </el-dialog>
   </section>
 </template>
 
 <script>
+  import $axios from '@/plugins/ajax'
   import { mapState } from 'vuex'
   import MyHeader from '@/components/MyHeader'
   import MyFooter from '@/components/MyFooter'
   import GameCard from '@/components/GameCard'
   import PublishGameForm from '@/components/PublishGameForm'
+
   export default {
     data() {
       return {
-        publishGameDialog: false
+        publishGameDialog: false,
+        searchOpt: {
+          type: ''
+        },
+        searchResultList: []
       };
     },
     computed: {
@@ -60,11 +61,16 @@
           this.$message.warning('登陆后才能发布比赛哦！')
         }
       },
-      savePublishGame() {
-        this.publishGameDialog = false
-      },
-      resetPublishGame() {
+      // 按类型搜索比赛
+      searchGame() {
+        $axios.post('/game/v1/search', this.searchOpt).then(({res}) => {
+          if (res.statusCode === 200) {
+            this.searchResultList = res.data
+          }
+        })
       }
+    },
+    created() {
     }
   }
 </script>

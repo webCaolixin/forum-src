@@ -1,43 +1,89 @@
 <template>
 	<section id="postingCardBox">
-		<el-card class="postingCard" v-for="i in 10" :key="i">
-			<el-row>
-				<el-col class="post-userPic-box" :span="4">
-					<img class="post-user-pic" src="../../assets/images/logo.png" alt=""/>
-				</el-col>
-				<el-col :span="20">
-					<el-row class="post-title">
-						标题：<span class="title-content" title="点击查看详情">湖人真的强！！</span>
-					</el-row>
-					<el-row class="post-footer">
-						<el-col :span="12" class="comment-num">
-							<i class="fa fa-commenting-o" aria-hidden="true" title="评论数"> {{100}}</i>
-						</el-col>
-						<el-col :span="12" class="post-time">
-							<i class="fa fa-clock-o" aria-hidden="true" title="发帖时间"> {{'0000-00-00 00:00:00'}}</i>
-						</el-col>
-					</el-row>
-				</el-col>
-			</el-row>
-		</el-card>
+    <el-row class="no-data" v-if="postingData.length === 0">暂无数据</el-row>
+    <el-row v-else>
+      <el-card class="postingCard" v-for="i in postingData" :key="i.id">
+        <el-row>
+          <el-col class="post-userPic-box" :span="4">
+            <img class="post-user-pic" :src="i.picture" :alt="i.name"/>
+          </el-col>
+          <el-col :span="20">
+            <el-row class="post-title">
+              标题：<span class="title-content" title="点击查看详情">{{i.title}}</span>
+            </el-row>
+            <el-row class="post-footer">
+              <el-col :span="12" class="comment-num">
+                <i class="fa fa-commenting-o" aria-hidden="true" title="评论数"> {{id.num}}</i>
+              </el-col>
+              <el-col :span="12" class="post-time">
+                <i class="fa fa-clock-o" aria-hidden="true" title="发帖时间"> {{'0000-00-00 00:00:00'}}</i>
+              </el-col>
+            </el-row>
+          </el-col>
+        </el-row>
+      </el-card>
+
+      <el-row class="pagination-box">
+        <el-pagination
+          background
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :page-sizes="[5, 10, 20]"
+          :page-size="paginationOpt.pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="postingData.length">
+        </el-pagination>
+      </el-row>
+    </el-row>
 	</section>
 </template>
 
 <script>
+  import $axios from '@/plugins/ajax'
+
 	export default {
 		data() {
 			return {
+        postingData: [],
+        paginationOpt: {
+          pn: 1,
+          pageSize: 5,
+          navigatePages: null
+        }
 			}
 		},
 		methods: {
+      handleSizeChange(currentSize) {
+        this.paginationOpt.pageSize = currentSize
+        this.getPostingData()
+      },
+      handleCurrentChange(currentPage) {
+        this.paginationOpt.pn = currentPage
+        this.getPostingData()
+      },
+      getPostingData() {
+        $axios.post('/forum/v1/list', this.paginationOpt).then(({res}) => {
+          if (res.statusCode === 200) {
+            this.postingData = res.data.list
+          }
+        })
+      }
 		},
 		created() {
+		  this.getPostingData()
 		}
 	}
 </script>
 
 <style lang="stylus" scoped>
 #postingCardBox
+  min-height 300px
+  .no-data
+    line-height 300px
+    text-align center
+    color #5e6d82
+    font-size 18px
+    letter-spacing 3px
   .postingCard
     margin-bottom 12px
     .post-userPic-box
@@ -53,4 +99,6 @@
         text-align left
       .post-time
         text-align right
+  .pagination-box
+    text-align center
 </style>

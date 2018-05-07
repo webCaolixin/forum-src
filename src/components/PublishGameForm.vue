@@ -5,39 +5,45 @@
 			:model="publishGameForm"
 			:rules="publishGameFormRules"
 			label-width="100px">
-			<el-form-item label="比赛类型：">
-				<el-select v-model="publishGameForm" placeholder="请选择比赛类型">
-					<el-option label="类型一" value="leixingyi"></el-option>
+			<el-form-item label="比赛类型：" prop="type">
+				<el-select v-model="publishGameForm.type" placeholder="请选择比赛类型">
+					<el-option v-for="i in typeList" :label="i.type" :value="i.id" :key="i.id"></el-option>
 				</el-select>
 			</el-form-item>
 
-			<el-form-item label="比赛场地：">
-				<el-select v-model="publishGameForm" placeholder="请选择比赛场地">
-					<el-option label="区域一" value="quyuyi"></el-option>
+			<el-form-item label="比赛场地：" prop="placeId">
+				<el-select v-model="publishGameForm.placeId" placeholder="请选择比赛场地">
+          <el-option v-for="i in typeList" :label="i.type" :value="i.id" :key="i.id"></el-option>
 				</el-select>
 			</el-form-item>
 
-			<el-form-item label="所需人数：">
-				<el-input-number v-model="publishGameForm" :min="1"></el-input-number>
+			<el-form-item label="所需人数：" prop="peopleNum">
+				<el-input-number v-model="publishGameForm.peopleNum" :min="1"></el-input-number>
 			</el-form-item>
 
-			<el-form-item label="起止时间：">
+			<el-form-item label="起止时间：" prop="timeRange">
 				<el-date-picker
-					v-model="publishGameForm"
+					v-model="publishGameForm.timeRange"
 					type="datetimerange"
+          value-format="yyyy-MM-dd HH:mm:ss"
 					range-separator="至"
 					start-placeholder="开始日期"
 					end-placeholder="结束日期">
 				</el-date-picker>
 			</el-form-item>
 
-			<el-form-item label="描述：">
+			<el-form-item label="描述：" prop="description">
 				<el-input
           type="textarea"
-          v-model="publishGameForm.describe"
+          v-model="publishGameForm.description"
           :autosize="{minRows: 3, maxRows: 5}"
           placeholder="请填写比赛具体信息"></el-input>
 			</el-form-item>
+
+      <el-form-item class="dialog-footer">
+        <el-button type="primary" plain @click="resetPublishGame">重 置</el-button>
+        <el-button type="primary" @click="savePublishGame">发 布</el-button>
+      </el-form-item>
 		</el-form>
 		<el-row>
 			<el-col>
@@ -48,28 +54,74 @@
 </template>
 
 <script>
+  import $axios from '@/plugins/ajax'
+
 	export default {
 		data() {
 			return {
 				typeList: [],
-				locationList: [],
+				placeList: [],
 				publishGameForm: {
-					describe: ''
+          type: '',
+          placeId: '',
+          peopleNum: '',
+          timeRange: '',
+          startTime: '',
+          endTime: '',
+          description: ''
 				},
 				publishGameFormRules: {
+          type: [{required: true, message: '不能为空', trigger: 'blur'}],
+          placeId: [{required: true, message: '不能为空', trigger: 'blur'}],
+          peopleNum: [{required: true, message: '不能为空', trigger: 'blur'}],
+          timeRange: [{required: true, message: '不能为空', trigger: 'blur'}],
+          description: [{required: true, message: '不能为空', trigger: 'blur'}]
 				}
 			}
 		},
 		methods: {
-			reset() {
-			},
-			publishGame() {
-			}
+      savePublishGame() {
+        this.$refs.publishGameForm.validate((valid) => {
+          if (valid) {
+            this.publishGameForm.startTime = this.publishGameForm.timeRange[0]
+            this.publishGameForm.endTime = this.publishGameForm.timeRange[1]
+            this.$delete(this.publishGameForm, 'timeRange')
+            $axios.post('/game/v1/add', this.publishGameForm).then(({res}) => {
+              if (res.statusCode === 200) {
+                this.publishGameDialog = false
+                this.$message.success(res.message)
+              } else {
+                this.$message.error(res.message)
+              }
+            })
+          } else {
+            return false
+          }
+        })
+      },
+      resetPublishGame() {
+        this.$refs.publishGameForm.resetFields()
+      }
 		},
 		created() {
+		  // 获取比赛类型列表
+      $axios.get('/user/v1/typeList').then(({res}) => {
+        if (res.statusCode === 200) {
+          this.typeList = res.data
+        }
+      })
+      // 获取场地列表
+      $axios.get('/user/v1/placeList').then(({res}) => {
+        if (res.statusCode === 200) {
+          this.placeList = res.data
+        }
+      })
 		}
 	}
 </script>
 
 <style lang="stylus" scoped>
+#publishGameForm
+  .dialog-footer
+    text-align right
 </style>
