@@ -1,6 +1,9 @@
 <template>
 	<section id="game-card">
-    <el-row class="no-data" v-if="gameData.length === 0">暂无数据</el-row>
+    <el-row class="no-data" v-if="gameData.length === 0">
+      <img src="../assets/images/no-data.png" alt="No Data..."/>
+      <div>暂无数据</div>
+    </el-row>
     <el-row v-else>
       <el-card class="card-box" v-for="i in gameData" :key="i.id">
         <el-row>
@@ -119,11 +122,13 @@
   #game-card
     min-height 300px
     .no-data
-      line-height 300px
+      margin-top 100px
       text-align center
       color #5e6d82
       font-size 18px
       letter-spacing 3px
+      img
+        margin-bottom 30px
 		.card-box
 			.el-card__body
 				padding 12px !important

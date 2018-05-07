@@ -1,6 +1,9 @@
 <template>
 	<section id="myPublishedPostingsCard">
-    <el-row class="no-data" v-if="myPubPostData.length === 0">暂无数据</el-row>
+    <el-row class="no-data" v-if="myPubPostData.length === 0">
+      <img src="../../assets/images/no-data.png" alt="No Data..."/>
+      <div>暂无数据</div>
+    </el-row>
     <el-row v-else>
       <el-card class="myPubPostCard" v-for="i in myPubPostData" :key="i.id">
         <el-row class="posting-title">
@@ -81,11 +84,13 @@ export default {
 #myPublishedPostingsCard
   min-height 300px
   .no-data
-    line-height 300px
+    margin-top 100px
     text-align center
     color #5e6d82
     font-size 18px
     letter-spacing 3px
+    img
+      margin-bottom 30px
   .myPubPostCard
     margin-bottom 12px
     .posting-title, .posting-detail
