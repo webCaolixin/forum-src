@@ -1,7 +1,7 @@
 <template>
 	<section id="myCenter">
 		<el-row>
-			<el-col :span="4">
+			<el-col :span="3">
 				<el-menu
 					id="myCenter-menu"
 					:router="true"
@@ -17,7 +17,7 @@
 						</el-menu-item>
 				</el-menu>
 			</el-col>
-			<el-col :span="20" id="myCenter-view">
+			<el-col :span="21" id="myCenter-view">
 				<router-view></router-view>
 			</el-col>
 		</el-row>

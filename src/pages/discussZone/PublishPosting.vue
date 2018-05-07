@@ -4,7 +4,7 @@
 			ref="pubPostingForm"
 			:model="pubPostingForm"
 			:rules="pubPostingFormRules"
-			label-width="100px">
+			label-width="80px">
 				<el-form-item label="标题：" prop="title">
 					<el-input v-model="pubPostingForm.title"></el-input>
 				</el-form-item>

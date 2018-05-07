@@ -2,18 +2,19 @@
 	<section id="discussZone">
 		<main class="main-content">
 			<el-row>
-				<el-col :span="5">
-					<el-row>热门帖子</el-row>
+				<el-col :span="4">
+					<el-row class="hotPostingTitle">
+            <span> | </span>热门帖子</el-row>
 					<el-row>
 						<ul class="hotPostingUl">
 							<li
 								class="hotPostItem"
 								v-for="(i, $index) in 10"
-								:key="$index+1">{{`${$index+1}、`+`${i}`.repeat(30)}}</li>
+								:key="$index+1">{{`${$index+1}. `+`${i}`.repeat(30)}}</li>
 						</ul>
 					</el-row>
 				</el-col>
-				<el-col class="gutter" :span="18">
+				<el-col class="gutter" :span="20">
 					<el-row class="pub-posting-btn-box">
 						<el-button
 							class="pub-posting-btn"
@@ -71,26 +72,37 @@ export default {
 
 <style lang="stylus" scoped>
 #discussZone
-	.main-content
-		width 90%
-		padding 20px
-		margin 0 auto
-		margin-bottom 60px
-		.pub-posting-btn-box
-			margin-bottom 10px
-		.pub-posting-btn
-			width 130px
-		.hotPostingUl
-			.hotPostItem
-				padding 5px 10px
-				color #409eff
-				cursor pointer
-				overflow hidden
-				white-space nowrap
-				text-overflow ellipsis
-				&:hover
-					text-decoration underline
-		.gutter
-			padding-left 15px
-			border-left 1px solid #ebebeb
+  .main-content
+    width 85%
+    padding 20px
+    margin 0 auto
+    margin-bottom 60px
+    .pub-posting-btn-box
+      margin-bottom 10px
+    .pub-posting-btn
+      width 130px
+    .hotPostingTitle
+      padding-bottom 3px
+      margin 0 15px 5px 0
+      color #888
+      font-size 15px
+      font-weight bold
+      border-bottom 1px solid #ebebeb
+      span
+        color #409eff
+        font-weight bold
+    .hotPostingUl
+      .hotPostItem
+        padding 5px 12px 5px 5px
+        color #555
+        cursor pointer
+        overflow hidden
+        white-space nowrap
+        text-overflow ellipsis
+        &:hover
+          color #409eff
+          text-decoration underline
+    .gutter
+      padding-left 15px
+      border-left 1px solid #ebebeb
 </style>
