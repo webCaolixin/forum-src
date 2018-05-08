@@ -5,12 +5,13 @@
 				<el-col :span="4">
 					<el-row class="hotPostingTitle">
             <span> | </span>热门帖子</el-row>
-					<el-row>
-						<ul class="hotPostingUl">
+					<el-row class="hotPostingContent">
+            <img v-if="hotPostingList.length===0" src="../../assets/images/no-data2.jpg" alt="No Data..."/>
+						<ul v-else class="hotPostingUl">
 							<li
 								class="hotPostItem"
-								v-for="(i, $index) in 10"
-								:key="$index+1">{{`${$index+1}. `+`${i}`.repeat(30)}}</li>
+								v-for="(i, $index) in hotPostingList"
+								:key="$index+1">{{`${$index+1}. `+`${$index}`.repeat(30)}}</li>
 						</ul>
 					</el-row>
 				</el-col>
@@ -44,6 +45,7 @@ import PublishPosting from './PublishPosting.vue'
 export default {
 	data() {
 		return {
+		  hotPostingList: [],
 			pubPostingDialog: false
 		}
 	},
@@ -91,6 +93,10 @@ export default {
       span
         color #409eff
         font-weight bold
+    .hotPostingContent
+      img
+        display block
+        margin 100px auto 0
     .hotPostingUl
       .hotPostItem
         padding 5px 12px 5px 5px
