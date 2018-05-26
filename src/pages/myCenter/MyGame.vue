@@ -1,17 +1,14 @@
 <template>
 	<section id="myGame">
 		<el-tabs v-model="activeTabName" @tab-click="handleTabClick">
-			<el-tab-pane label="我参与的比赛" name="join-in">
-				我参与的比赛
-				<game-card></game-card>
+			<el-tab-pane label="我参与的比赛" name="joinIn">
+				<game-card v-if="activeTabName==='joinIn'" gameType="joinIn"></game-card>
 			</el-tab-pane>
 			<el-tab-pane label="我发布的比赛" name="published">
-				我发布的比赛
-				<game-card></game-card>
+				<game-card v-if="activeTabName==='published'" gameType="published"></game-card>
 			</el-tab-pane>
-			<el-tab-pane label="已完成/已取消的比赛" name="finish-cancel">
-				已完成/已取消的比赛
-				<game-card></game-card>
+			<el-tab-pane label="已完成/已取消的比赛" name="finishCancel">
+				<game-card v-if="activeTabName==='finishCancel'" gameType="finishCancel"></game-card>
 			</el-tab-pane>
 		</el-tabs>
 	</section>
@@ -23,14 +20,15 @@
 	export default {
 		data() {
 			return {
-				activeTabName: 'join-in'
+				activeTabName: 'joinIn'
 			}
 		},
 		components: {
 			GameCard
 		},
 		methods: {
-			handleTabClick() {
+			handleTabClick(tab) {
+				this.activeTabName = tab.name
 			}
 		},
     created() {

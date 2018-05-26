@@ -18,12 +18,12 @@
         </el-row>
         <el-row class="posting-footer">
           <el-col :span="12" class="icon-box">
-            <i class="fa fa-commenting-o" aria-hidden="true" title="评论数"> {{100}}</i>
-            <i class="fa fa-thumbs-o-up" aria-hidden="true" title="点赞数"> {{100}}</i>
-            <i class="fa fa-thumbs-o-down" aria-hidden="true" title="被踩数"> {{100}}</i>
+            <i class="fa fa-commenting-o" aria-hidden="true" title="评论数"> {{i.num}}</i>
           </el-col>
           <el-col :span="12" class="delete-btn">
-            <el-button type="primary" size="mini" plain>删除</el-button>
+            <el-button
+              type="primary" size="mini" plain
+              @click="deleteMyPubPosting(i.id)">删除</el-button>
           </el-col>
         </el-row>
       </el-card>
@@ -36,7 +36,7 @@
           :page-sizes="[5, 10, 20]"
           :page-size="paginationOpt.pageSize"
           layout="total, sizes, prev, pager, next, jumper"
-          :total="myPubPostData.length">
+          :total="totalCount">
         </el-pagination>
       </el-row>
     </el-row>
@@ -50,10 +50,10 @@ export default {
 	data() {
 		return {
 		  myPubPostData: [],
+      totalCount: 0,
       paginationOpt: {
         pn: 1,
-        pageSize: 5,
-        navigatePages: null
+        pageSize: 5
       }
 		}
 	},
@@ -67,10 +67,30 @@ export default {
       this.getMyPubPostData()
     },
     getMyPubPostData() {
-      $axios.post('/user/v1/userPost', this.paginationOpt).then(({res}) => {
-        if (res.statusCode === 200) {
-          this.myPubPostData = res.data.list
+      $axios.post('/user/v1/userPost', this.paginationOpt).then(({data}) => {
+        if (data.statusCode === 200) {
+          this.myPubPostData = data.data.list
+          this.totalCount = data.data.total
         }
+      })
+    },
+    // 删除我发布的帖子
+    deleteMyPubPosting(postId) {
+      this.$confirm('确定删除该帖子？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        $axios.delete(`/forum/v1/del/${postId}`).then(({data}) => {
+          if (data.statusCode === 200) {
+            this.$message.success(data.message)
+            this.getMyPubPostData()
+          } else {
+            this.$message.success(data.message)
+          }
+        })
+      }).catch(() => {
+        this.$message.info('删除操作已取消！')
       })
     }
 	},

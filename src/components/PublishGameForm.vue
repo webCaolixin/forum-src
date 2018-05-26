@@ -7,13 +7,21 @@
 			label-width="100px">
 			<el-form-item label="比赛类型：" prop="type">
 				<el-select v-model="publishGameForm.type" placeholder="请选择比赛类型">
-					<el-option v-for="i in typeList" :label="i.type" :value="i.id" :key="i.id"></el-option>
+					<el-option
+            v-for="i in typeList"
+            :label="i.type"
+            :value="i.type"
+            :key="i.id"></el-option>
 				</el-select>
 			</el-form-item>
 
 			<el-form-item label="比赛场地：" prop="placeId">
 				<el-select v-model="publishGameForm.placeId" placeholder="请选择比赛场地">
-          <el-option v-for="i in typeList" :label="i.type" :value="i.id" :key="i.id"></el-option>
+          <el-option
+            v-for="i in placeList"
+            :label="`${i.type}_${i.identifier}`"
+            :value="i.id"
+            :key="i.id"></el-option>
 				</el-select>
 			</el-form-item>
 
@@ -61,11 +69,11 @@
 			return {
 				typeList: [],
 				placeList: [],
+        timeRange: '',
 				publishGameForm: {
           type: '',
           placeId: '',
           peopleNum: '',
-          timeRange: '',
           startTime: '',
           endTime: '',
           description: ''
@@ -85,13 +93,14 @@
           if (valid) {
             this.publishGameForm.startTime = this.publishGameForm.timeRange[0]
             this.publishGameForm.endTime = this.publishGameForm.timeRange[1]
-            this.$delete(this.publishGameForm, 'timeRange')
-            $axios.post('/game/v1/add', this.publishGameForm).then(({res}) => {
-              if (res.statusCode === 200) {
-                this.publishGameDialog = false
-                this.$message.success(res.message)
+            let sendData = Object.assign({}, this.publishGameForm)
+            delete sendData.timeRange
+            $axios.post('/game/v1/add', this.publishGameForm).then(({data}) => {
+              if (data.statusCode === 200) {
+                this.$emit('closePubGameDialog')
+                this.$message.success(data.message)
               } else {
-                this.$message.error(res.message)
+                this.$message.error(data.message)
               }
             })
           } else {
@@ -105,15 +114,15 @@
 		},
 		created() {
 		  // 获取比赛类型列表
-      $axios.get('/user/v1/typeList').then(({res}) => {
-        if (res.statusCode === 200) {
-          this.typeList = res.data
+      $axios.get('/user/v1/typeList').then(({data}) => {
+        if (data.statusCode === 200) {
+          this.typeList = data.data
         }
       })
       // 获取场地列表
-      $axios.get('/user/v1/placeList').then(({res}) => {
-        if (res.statusCode === 200) {
-          this.placeList = res.data
+      $axios.get('/user/v1/placeList').then(({data}) => {
+        if (data.statusCode === 200) {
+          this.placeList = data.data
         }
       })
 		}

@@ -5,21 +5,32 @@
 				<h1 class="register-title">球迷联盟·注册</h1>
 				<el-form ref="registerForm" :model="registerForm" :rules="registerFormRules">
 					<el-form-item prop="username">
-						<el-input v-model="registerForm.username" placeholder="用户名">
+						<el-input
+							v-model="registerForm.username"
+							placeholder="用户名"
+							@keyup.enter="registe">
 							<template slot="prepend">
                 <i class="fa fa-user" aria-hidden="true"></i>
 							</template>
 						</el-input>
 					</el-form-item>
 					<el-form-item prop="password">
-						<el-input v-model="registerForm.password" placeholder="密码">
+						<el-input
+							v-model="registerForm.password"
+							type="password"
+							placeholder="密码"
+							@keyup.enter="registe">
 							<template slot="prepend">
                 <i class="fa fa-lock" aria-hidden="true"></i>
 							</template>
 						</el-input>
 					</el-form-item>
 					<el-form-item prop="confirmPassword">
-						<el-input v-model="registerForm.confirmPassword" placeholder="确认密码">
+						<el-input
+							v-model="registerForm.confirmPassword"
+							type="password"
+							placeholder="确认密码"
+							@keyup.enter="registe">
 							<template slot="prepend">
                 <i class="fa fa-unlock-alt" aria-hidden="true"></i>
 							</template>
@@ -43,8 +54,29 @@
 </template>
 
 <script>
+	import $axios from '@/plugins/ajax'
+
 	export default {
 		data() {
+			let validatePass = (rule, value, callback) => {
+		    if (value === '') {
+		      callback(new Error('请输入密码'));
+		    } else {
+		      if (this.registerForm.confirmPassword !== '') {
+		        this.$refs.registerForm.validateField('confirmPassword');
+		      }
+		      callback();
+		    }
+		  };
+		  let validatePass2 = (rule, value, callback) => {
+		    if (value === '') {
+		      callback(new Error('请再次输入密码'));
+		    } else if (value !== this.registerForm.password) {
+		      callback(new Error('两次输入密码不一致!'));
+		    } else {
+		      callback();
+		    }
+		  };
 			return {
 				registerForm: {
 					username: '',
@@ -53,8 +85,16 @@
 				},
 				registerFormRules: {
 					username: [{required: true, message: '不能为空', trigger: 'blur'}],
-					password: [{required: true, message: '不能为空', trigger: 'blur'}],
-					confirmPassword: [{required: true, message: '请确认密码', trigger: 'blur'}]
+					password: [{
+						required: true, message: '不能为空', trigger: 'blur'}, {
+						min: 6, max: 32, message: '密码长度应为6~32个字符', trigger: 'blur'
+					}, {
+						validator: validatePass, trigger: 'blur'
+					}],
+					confirmPassword: [{
+						required: true, message: '请确认密码', trigger: 'blur'}, {
+						validator: validatePass2, trigger: 'blur'
+					}]
 				}
 			}
 		},
@@ -62,7 +102,18 @@
 			registe() {
 				this.$refs.registerForm.validate((valid) => {
 					if (valid) {
-						this.$router.push('/Home')
+						let registeData = {
+							username: this.registerForm.username,
+							password: this.registerForm.password
+						}
+						$axios.post('/user/v1/register', registeData).then(({data}) => {
+							if (data.statusCode === 200) {
+								this.$store.commit('SET_USER_INFO', data.data.uid)
+								this.$router.push('/Home')
+							} else {
+								this.$message.error(data.message)
+							}
+						})
 					} else {
 						this.$message.warning('请按要求完善注册信息！')
 						return false

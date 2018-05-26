@@ -47,13 +47,13 @@ export default {
 		pubPosting() {
 			this.$refs.pubPostingForm.validate((valid) => {
 				if (valid) {
-					$axios.post('', this.pubPostingForm).then(({res}) => {
-						if (res.statusCode === 200) {
+					$axios.post('/forum/v1/add', this.pubPostingForm).then(({data}) => {
+						if (data.statusCode === 200) {
 							this.$emit('closePubPosting')
 							this.$refs.pubPostingForm.resetFields()
-							this.$message.success('发布成功！')
+							this.$message.success(data.message)
 						} else {
-							this.$message.error('发布失败，请重试！')
+							this.$message.error(data.message)
 						}
 					})
 				} else {

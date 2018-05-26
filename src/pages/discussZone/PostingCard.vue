@@ -65,9 +65,9 @@
         this.getPostingData()
       },
       getPostingData() {
-        $axios.post('/forum/v1/list', this.paginationOpt).then(({res}) => {
-          if (res.statusCode === 200) {
-            this.postingData = res.data.list
+        $axios.post('/forum/v1/list', this.paginationOpt).then(({data}) => {
+          if (data.statusCode === 200) {
+            this.postingData = data.data.list
           }
         })
       }

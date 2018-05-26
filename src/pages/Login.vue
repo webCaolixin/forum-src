@@ -5,14 +5,20 @@
 				<h1 class="login-title">球迷联盟·登录</h1>
 				<el-form ref="loginForm" :model="loginForm" :rules="loginFormRules">
 					<el-form-item prop="username">
-						<el-input v-model="loginForm.username" placeholder="用户名">
+						<el-input
+							v-model="loginForm.username"
+							placeholder="用户名"
+							@keyup.enter="login">
 							<template slot="prepend">
                 <i class="fa fa-user" aria-hidden="true"></i>
 							</template>
 						</el-input>
 					</el-form-item>
 					<el-form-item prop="password">
-						<el-input v-model="loginForm.password" placeholder="密码">
+						<el-input
+							v-model="loginForm.password"
+							placeholder="密码"
+							@keyup.enter="login">
 							<template slot="prepend">
                 <i class="fa fa-lock" aria-hidden="true"></i>
               </template>
@@ -53,9 +59,10 @@
 			login() {
 				this.$refs.loginForm.validate((valid) => {
 					if (valid) {
-						this.$store.commit('SET_USER_INFO', '1234567890')   // 1.登陆成功，vuex设置用户id
-            sessionStorage.setItem('userUuid', '1234567890')    // 2.session同时存储id，手动刷新页面时用它重写vuex用户id
-						this.$router.push('/Home')                          // 3.跳转到首页
+						this.$store.dispatch('login', this.loginForm).then(data => {
+							sessionStorage.setItem('userUuid', data.data.uid)			// session同时存储id，手动刷新页面时用它重写vuex用户id
+							this.$router.push('/Home')                          	// 跳转到首页
+						})
 					} else {
 						this.$message.warning('请完善登录信息！')
 						return false

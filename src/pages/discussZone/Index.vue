@@ -31,6 +31,7 @@
 		<el-dialog
       title="发布帖子"
       width="700px"
+      v-if="pubPostingDialog"
       :visible.sync="pubPostingDialog">
       <publish-posting></publish-posting>
     </el-dialog>
@@ -39,6 +40,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import $axios from '@/plugins/ajax'
 import PostingCard from './PostingCard.vue'
 import PublishPosting from './PublishPosting.vue'
 
@@ -59,15 +61,25 @@ export default {
 		})
 	},
 	methods: {
+		// 发布帖子
 		handelpublishPosting() {
 			if (this.userId) {
 				this.pubPostingDialog = true
 			} else {
 				this.$message.warning('登陆后才能发贴哦！')
 			}
+		},
+		// 获取热门帖子
+		getHostPostings() {
+			$axios.get('/forum/v1/topTen').then(({data}) => {
+				if (data && data instanceof Array) {
+					this.hotPostingList = data
+				}
+			})
 		}
 	},
 	created() {
+		this.getHostPostings()
 	}
 }
 </script>

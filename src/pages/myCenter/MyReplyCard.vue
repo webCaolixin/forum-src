@@ -5,7 +5,7 @@
       <div>暂无数据</div>
     </el-row>
     <el-row v-else>
-      <el-card class="myReplyCard"  v-for="i in 5" :key="i.id">
+      <el-card class="myReplyCard"  v-for="i in myReplyData" :key="i.id">
         <el-row class="reply-title">
           <el-col>
             来自：<span class="title-content">{{i.title}}</span>
@@ -19,12 +19,13 @@
         </el-row>
         <el-row class="reply-footer">
           <el-col :span="12" class="icon-box">
-            <i class="fa fa-commenting-o" aria-hidden="true" title="评论数"> {{100}}</i>
             <i class="fa fa-thumbs-o-up" aria-hidden="true" title="点赞数"> {{i.handNum}}</i>
             <i class="fa fa-thumbs-o-down" aria-hidden="true" title="被踩数"> {{i.footNum}}</i>
           </el-col>
           <el-col :span="12" class="delete-btn">
-            <el-button type="primary" size="mini" plain>删除</el-button>
+            <el-button
+              type="primary" size="mini" plain
+              @click="deleteMyReplyPosting(i.id)">删除</el-button>
           </el-col>
         </el-row>
       </el-card>
@@ -37,7 +38,7 @@
           :page-sizes="[5, 10, 20]"
           :page-size="paginationOpt.pageSize"
           layout="total, sizes, prev, pager, next, jumper"
-          :total="myReplyData.Length">
+          :total="totalCount">
         </el-pagination>
       </el-row>
     </el-row>
@@ -51,10 +52,10 @@ export default {
 	data() {
 		return {
       myReplyData: [],
+      totalCount: 0,
       paginationOpt: {
         pn: 1,
-        pageSize: 5,
-        navigatePages: null
+        pageSize: 5
       }
 		}
 	},
@@ -68,10 +69,30 @@ export default {
       this.getMyReplyData()
     },
     getMyReplyData() {
-      $axios.post('/user/v1/userAnswer', this.paginationOpt).then(({res}) => {
-        if (res.statusCode === 200) {
-          this.myReplyData = res.data.list
+      $axios.post('/user/v1/userAnswer', this.paginationOpt).then(({data}) => {
+        if (data.statusCode === 200) {
+          this.myReplyData = data.data.list
+          this.totalCount = data.data.total
         }
+      })
+    },
+    // 删除我的回复
+    deleteMyReplyPosting(answerId) {
+      this.$confirm('确定删除该帖子？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        $axios.delete(`/forum/v1/reply/${answerId}`).then(({data}) => {
+          if (data.statusCode === 200) {
+            this.$message.success(data.message)
+            this.getMyReplyData()
+          } else {
+            this.$message.success(data.message)
+          }
+        })
+      }).catch(() => {
+        this.$message.info('删除操作已取消！')
       })
     }
 	},

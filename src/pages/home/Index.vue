@@ -6,20 +6,37 @@
           plain
           type="primary"
           @click="publishGame">发布比赛</el-button>
-          <el-button class="search-btn" type="primary" size="small" plain @click="searchGame">搜 索</el-button>
-          <el-input class="search-input" size="small" placeholder="搜索您要的比赛..."></el-input>
+          <el-button
+            class="search-btn"
+            type="primary"
+            plain
+            @click="searchGame">搜 索</el-button>
+          <el-select
+            v-model="searchOpt.type"
+            placeholder="搜选择比赛类型..."
+            class="search-select">
+            <el-option
+              v-for="(item, $index) in gameTypeLists"
+              :label="item.type"
+              :value="item.type"
+              :key="$index">
+            </el-option>
+          </el-select>
       </el-row>
       <el-row>
-        <game-card :dataList="searchResultList"></game-card>
+        <game-card :dataList="searchResultList" :gameType="gameType"></game-card>
       </el-row>
     </main>
 
     <el-dialog
       title="发布比赛"
-      top="12vh"
+      top="8vh"
       width="700px"
+      v-if="publishGameDialog"
       :visible.sync="publishGameDialog">
-      <publish-game-form ref="publishGameRef"></publish-game-form>
+      <publish-game-form
+        ref="publishGameRef"
+        @closePubGameDialog="closePubGameDialog"></publish-game-form>
     </el-dialog>
   </section>
 </template>
@@ -35,11 +52,13 @@
   export default {
     data() {
       return {
+        gameType: 'allGame',
         publishGameDialog: false,
         searchOpt: {
           type: ''
         },
-        searchResultList: []
+        searchResultList: [],   // 搜索结果
+        gameTypeLists: []       // 比赛类型
       };
     },
     computed: {
@@ -61,16 +80,30 @@
           this.$message.warning('登陆后才能发布比赛哦！')
         }
       },
-      // 按类型搜索比赛
-      searchGame() {
-        $axios.post('/game/v1/search', this.searchOpt).then(({res}) => {
-          if (res.statusCode === 200) {
-            this.searchResultList = res.data
+      // 获取比赛类型
+      getGameType() {
+        $axios.get('/user/v1/typeList').then(({data}) => {
+          if (data.statusCode === 200) {
+            this.gameTypeLists = data.data
           }
         })
+      },
+      // 按类型搜索比赛
+      searchGame() {
+        $axios.get(`/game/v1/search/${this.searchOpt.type}`).then(({data}) => {
+          if (data.statusCode === 200) {
+            this.searchResultList = data.data
+          }
+        })
+      },
+      closePubGameDialog() {
+        this.publishGameDialog = false
+        this.gameType = ''
+        this.gameType = 'allGame'
       }
     },
     created() {
+      this.getGameType()
     }
   }
 </script>
@@ -85,10 +118,10 @@
     margin-bottom 10px
     .el-button
       width 130px
-    .search-input, .search-btn
+    .search-select, .search-btn
       float right
     .search-btn
       width 60px
-    .search-input
+    .search-select
       width 300px
 </style>

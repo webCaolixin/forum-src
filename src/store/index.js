@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-// import $axios from '@/plugins/ajax'
+import $axios from '@/plugins/ajax'
 
 Vue.use(Vuex)
 
@@ -41,15 +41,16 @@ const store = new Vuex.Store({
 	actions: {
 		// 获取用户信息
 		login({state, commit}, loginData) {
+			console.log(loginData)
 			return new Promise((resolve, reject) => {
-				// $axios.post('', loginData).then(({data}) => {
-				// 	if (data) {
-				// 		commit('SET_USER_INFO')
-				// 		resolve(data)
-				// 	} else {
-				// 		reject(data)
-				// 	}
-				// })
+				$axios.post('/user/v1/login', loginData).then(({data}) => {
+					if (data) {
+						commit('SET_USER_INFO', data.data.uid)
+						resolve(data)
+					} else {
+						reject(data)
+					}
+				})
 			})
 		}
 	}

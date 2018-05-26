@@ -11,8 +11,9 @@ axios.interceptors.response.use(response => response, error => Promise.resolve(e
 axios.defaults.withCredentials = true;
 
 const globalOptions = {
-  baseURL: window.location.protocol + '//' + window.location.host + '/',
-  // baseURL: 'https://192.168.211.218/',
+  // baseURL: window.location.protocol + '//' + window.location.host + '/',
+  // baseURL: 'https://192.168.0.103',
+  baseURL: '/api',
   timeout: 60000,
   headers: {
     'axios-header': 'axios'
@@ -40,13 +41,20 @@ export default {
     return globalOptions.baseURL;
   },
   post (url, data, config) {
+    // 序列化Object参数
+    let sendData = ''
+    for (let key in data) {
+      sendData += `${key}=${data[key]}&`
+    }
+    sendData = sendData.slice(0, -1)
+    // 处理配置参数
     let options = {};
     if (typeof config !== 'undefined') {
       options = merge(globalOptions, config);
     } else {
       options = globalOptions;
     }
-    return axios.post(convertURL(url), data, options).then((res) => {
+    return axios.post(convertURL(url), sendData, options).then((res) => {
       return res;
     })
   },
