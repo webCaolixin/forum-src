@@ -12,9 +12,8 @@ axios.interceptors.response.use(response => response, error => Promise.resolve(e
 axios.defaults.withCredentials = true;
 
 const globalOptions = {
-  // baseURL: window.location.protocol + '//' + window.location.host + '/',
-  // baseURL: 'https://192.168.0.103',
-  baseURL: '/api',
+  baseURL: window.location.protocol + '//' + window.location.host + '/',
+  // baseURL: '/api',
   timeout: 60000,
   headers: {
     'axios-header': 'axios'
