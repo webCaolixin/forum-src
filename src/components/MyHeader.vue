@@ -22,6 +22,7 @@
 
 <script>
 import {mapState, mapGetters} from 'vuex'
+import $axios from '@/plugins/ajax'
 
 export default {
 	data() {
@@ -48,13 +49,21 @@ export default {
 					cancelButtonText: '取消',
 					type: 'info'
 				}).then(() => {
-          sessionStorage.clear()
-					this.$store.commit('SET_USER_INFO', '')
-					this.$message.info('登录已退出！')
-					setTimeout(() => {
-						this.$router.push('/Home')
-						window.location.reload()
-					}, 500)
+					$axios.delete('/user/v1/login', {
+						headers: {'x-auth-token': sessionStorage.getItem('token') || ''}
+        	}).then(({data}) => {
+						if (data.statusCode === 200) {
+							sessionStorage.clear()
+							this.$store.commit('SET_USER_INFO', '')
+							this.$message.info('登录已退出！')
+							setTimeout(() => {
+								this.$router.push('/Home')
+								window.location.reload()
+							}, 500)
+						} else {
+							this.$message.error(data.message)
+						}
+					})
 				}).catch(() => {
 					this.$message.info('退出操作已取消！')
 				})

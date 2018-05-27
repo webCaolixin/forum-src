@@ -72,6 +72,8 @@
 <script>
   import { mapState } from 'vuex'
   import $axios from '@/plugins/ajax'
+  import Bus from '@/plugins/eventBus'
+  import formateDate from '@/utils'
 
 	export default {
 		data() {
@@ -112,7 +114,9 @@
 		methods: {
       // 首页获取全部比赛信息
       getGameData(url) {
-        $axios.post(url, this.paginationOpt).then(({data}) => {
+        $axios.post(url, this.paginationOpt, {
+          headers: {'x-auth-token': sessionStorage.getItem('token') || ''}
+        }).then(({data}) => {
           if (data.statusCode === 200) {
             this.gameData = data.data.list
             this.totalCount = data.data.total
@@ -122,7 +126,9 @@
       // 参加比赛
       handleJoinIn(gameUid) {
         if (this.userId) {
-          $axios.post('/game/v1/join', {gameUid: gameUid}).then(({data}) => {
+          $axios.post('/game/v1/join', {gameUid: gameUid}, {
+            headers: {'x-auth-token': sessionStorage.getItem('token') || ''}
+          }).then(({data}) => {
             if (data.statusCode === 200) {
               this.$message.success(data.message)
               this.getGameData(this.getURL)
@@ -137,7 +143,9 @@
       // 取消预约
       handleCancelJoin(gameUid) {
         if (this.userId) {
-          $axios.post('/game/v1/quit', {gameUid: gameUid}).then(({data}) => {
+          $axios.post('/game/v1/quit', {gameUid: gameUid}, {
+            headers: {'x-auth-token': sessionStorage.getItem('token') || ''}
+          }).then(({data}) => {
             if (data.statusCode === 200) {
                 this.$message.success(data.message)
                 this.getGameData(this.getURL)
@@ -152,7 +160,9 @@
       // 取消发布
       handleCancelPub(gameUid) {
         if (this.userId) {
-          $axios.post('/game/v1/end', {gameUid: gameUid}).then(({data}) => {
+          $axios.post('/game/v1/end', {gameUid: gameUid}, {
+            headers: {'x-auth-token': sessionStorage.getItem('token') || ''}
+          }).then(({data}) => {
             if (data.statusCode === 200) {
               this.$message.success(data.message)
               this.getGameData(this.getURL)
@@ -175,23 +185,14 @@
         this.getGameData(this.getURL)
       },
       // 格式化日期
-      formateDate (millSeconds) {
-        if (!millSeconds) {
-          return ''
-        } else {
-          let date = new Date(millSeconds)
-          let str = '';
-          str += date.getFullYear() + '-';
-          str += ((date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
-          str += (date.getDate() < 10 ? '0' + date.getDate() : date.getDate()) + ' ';
-          str += (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) + ':';
-          str += (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()) + ':';
-          str += (date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds());
-          return str;
-        }
+      formateDate(millSeconds) {
+        return formateDate(millSeconds)
       }
 		},
 		created() {
+      Bus.$on('closePubGameDialog', () => {
+        this.getGameData(this.getURL)
+      })
       switch (this.gameType) {
         case 'allGame':
           this.getURL = '/game/v1/list'

@@ -122,6 +122,9 @@
       float right
     .search-btn
       width 60px
+      span
+        display inline-block
+        margin 0 auto
     .search-select
       width 300px
 </style>

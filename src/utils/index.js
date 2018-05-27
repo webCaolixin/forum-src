@@ -2,7 +2,7 @@ let formateDate = (millSeconds) => {
   if (!millSeconds) {
     return ''
   } else {
-    let date = new Data(millSeconds)
+    let date = new Date(millSeconds)
     let str = '';
     str += date.getFullYear() + '-';
     str += ((date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
@@ -14,6 +14,4 @@ let formateDate = (millSeconds) => {
   }
 }
 
-export {
-  formateDate
-}
+export default formateDate

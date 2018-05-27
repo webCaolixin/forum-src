@@ -5,7 +5,10 @@
       <div>暂无数据</div>
     </el-row>
     <el-row v-else>
-      <el-card class="myReplyCard"  v-for="i in myReplyData" :key="i.id">
+      <el-card
+        class="myReplyCard"
+        v-for="i in myReplyData"
+        :key="i.id">
         <el-row class="reply-title">
           <el-col>
             来自：<span class="title-content">{{i.title}}</span>
@@ -69,7 +72,9 @@ export default {
       this.getMyReplyData()
     },
     getMyReplyData() {
-      $axios.post('/user/v1/userAnswer', this.paginationOpt).then(({data}) => {
+      $axios.post('/user/v1/userAnswer', this.paginationOpt, {
+          headers: {'x-auth-token': sessionStorage.getItem('token') || ''}
+        }).then(({data}) => {
         if (data.statusCode === 200) {
           this.myReplyData = data.data.list
           this.totalCount = data.data.total
@@ -83,7 +88,9 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        $axios.delete(`/forum/v1/reply/${answerId}`).then(({data}) => {
+        $axios.delete(`/forum/v1/reply/${answerId}`, {
+          headers: {'x-auth-token': sessionStorage.getItem('token') || ''}
+        }).then(({data}) => {
           if (data.statusCode === 200) {
             this.$message.success(data.message)
             this.getMyReplyData()
@@ -115,6 +122,10 @@ export default {
       margin-bottom 30px
   .myReplyCard
     margin-bottom 12px
+    &:hover
+      cursor pointer
+      border 1px solid #b3d8ff
+      box-shadow 3px 2px 5px 0 rgba(64, 158, 255, 0.3)
     .reply-title, .reply-detail
       text-align center
       padding 5px 10px

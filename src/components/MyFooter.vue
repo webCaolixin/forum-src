@@ -1,7 +1,7 @@
 <template>
 	<el-row>
 		<el-col :span="4" class="sprate">
-			<a href="">管理员入口</a>
+			<span class="adminEnterance" @click="adminLogin">管理员入口</span>
 		</el-col>
 		<el-col :span="20" class="friend-link">
 			<el-row>
@@ -45,7 +45,19 @@
 </template>
 
 <script>
+export default {
+	data() {
+		return {
+		}
+	},
+	methods: {
+		adminLogin() {
+			this.$router.push('/AdminLogin')
+		}
+	}
+}
 </script>
+
 <style lang="stylus" scoped>
 .sprate
 	border-right: 1px solid #ebebeb
@@ -59,4 +71,12 @@
 			&:hover
 				color #409eff
 				text-decoration underline
+.adminEnterance
+	cursor pointer
+	color #409eff
+	font-size 15px
+	font-weight bold
+	text-decoration none
+	&:hover
+		text-decoration underline
 </style>

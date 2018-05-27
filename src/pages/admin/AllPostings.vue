@@ -1,19 +1,17 @@
 <template>
-	<section id="myPublishedPostingsCard">
-    <el-row class="no-data" v-if="myPubPostData.length === 0">
+	<section id="allPublishedPostingsCard">
+    <el-row class="no-data" v-if="allPubPostData.length === 0">
       <img src="../../assets/images/no-data.png" alt="No Data..."/>
       <div>暂无数据</div>
     </el-row>
     <el-row v-else>
       <el-card
-        class="myPubPostCard"
-        v-for="i in myPubPostData"
+        class="allPubPostCard"
+        v-for="i in allPubPostData"
         :key="i.id">
         <el-row class="posting-title">
           <el-col>
-            <span
-              class="title-content"
-              @click="goToDetail(i.id)">标题：{{i.title}}</span>
+            <span class="title-content">标题：{{i.title}}</span>
           </el-col>
         </el-row>
         <el-row class="posting-detail">
@@ -28,7 +26,7 @@
           <el-col :span="12" class="delete-btn">
             <el-button
               type="primary" size="mini" plain
-              @click="deleteMyPubPosting(i.id)">删除</el-button>
+              @click="deletePubPosting(i.id)">删除</el-button>
           </el-col>
         </el-row>
       </el-card>
@@ -54,47 +52,47 @@ import $axios from '@/plugins/ajax'
 export default {
 	data() {
 		return {
-		  myPubPostData: [],
+      allPubPostData: [],
       totalCount: 0,
       paginationOpt: {
         pn: 1,
         pageSize: 5
       }
-		}
-	},
-	methods: {
+    }
+  },
+  methods: {
     handleSizeChange(currentSize) {
       this.paginationOpt.pageSize = currentSize
-      this.getMyPubPostData()
+      this.getAllPubPostData()
     },
     handleCurrentChange(currentPage) {
       this.paginationOpt.pn = currentPage
-      this.getMyPubPostData()
+      this.getAllPubPostData()
     },
-    // 获取我发布的帖子
-    getMyPubPostData() {
-      $axios.post('/user/v1/userPost', this.paginationOpt, {
+    // 获取所有发布的帖子
+    getAllPubPostData() {
+      $axios.post('/forum/v1/list', this.paginationOpt, {
           headers: {'x-auth-token': sessionStorage.getItem('token') || ''}
-        }).then(({data}) => {
+      }).then(({data}) => {
         if (data.statusCode === 200) {
-          this.myPubPostData = data.data.list
+          this.allPubPostData = data.data.list
           this.totalCount = data.data.total
         }
       })
     },
-    // 删除我发布的帖子
-    deleteMyPubPosting(postId) {
+    // 删除用户发布的帖子
+    deletePubPosting(postId) {
       this.$confirm('确定删除该帖子？', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        $axios.delete(`/forum/v1/del/${postId}`, {
+        $axios.delete(`/admin/v1/del/${postId}`, {
           headers: {'x-auth-token': sessionStorage.getItem('token') || ''}
         }).then(({data}) => {
           if (data.statusCode === 200) {
             this.$message.success(data.message)
-            this.getMyPubPostData()
+            this.getAllPubPostData()
           } else {
             this.$message.success(data.message)
           }
@@ -102,20 +100,16 @@ export default {
       }).catch(() => {
         this.$message.info('删除操作已取消！')
       })
-    },
-    // 查看帖子详情
-    goToDetail(id) {
-      this.$router.push(`/DiscussZone/postingDetail/${id}`)
     }
-	},
-	created() {
-    this.getMyPubPostData()
-	}
+  },
+  created() {
+    this.getAllPubPostData()
+  }
 }
 </script>
 
 <style lang="stylus" scoped>
-#myPublishedPostingsCard
+#allPublishedPostingsCard
   min-height 300px
   .no-data
     margin-top 100px
@@ -125,7 +119,7 @@ export default {
     letter-spacing 3px
     img
       margin-bottom 30px
-  .myPubPostCard
+  .allPubPostCard
     margin-bottom 12px
     &:hover
       cursor pointer

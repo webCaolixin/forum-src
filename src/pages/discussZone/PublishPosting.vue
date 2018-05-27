@@ -24,6 +24,7 @@
 
 <script>
 import $axios from '@/plugins/ajax'
+import Bus from '@/plugins/eventBus'
 
 export default {
 	data() {
@@ -47,8 +48,11 @@ export default {
 		pubPosting() {
 			this.$refs.pubPostingForm.validate((valid) => {
 				if (valid) {
-					$axios.post('/forum/v1/add', this.pubPostingForm).then(({data}) => {
+					$axios.post('/forum/v1/add', this.pubPostingForm, {
+            headers: {'x-auth-token': sessionStorage.getItem('token') || ''}
+          }).then(({data}) => {
 						if (data.statusCode === 200) {
+							Bus.$emit('closePubPosting')
 							this.$emit('closePubPosting')
 							this.$refs.pubPostingForm.resetFields()
 							this.$message.success(data.message)

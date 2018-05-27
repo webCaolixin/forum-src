@@ -11,6 +11,10 @@ const DiscussZone = () => import('@/pages/discussZone/Index')
 const MyCenter = () => import('@/pages/myCenter/Index')
 const MyGame = () => import('@/pages/myCenter/myGame')
 const MyPostings = () => import('@/pages/myCenter/MyPostings')
+const PostingDetail = () => import('@/components/PostingDetail')
+const AdminHome = () => import('@/pages/admin/Index')
+const AllPostings = () => import('@/pages/admin/AllPostings')
+const InputPlaces = () => import('@/pages/admin/InputPlaces')
 
 Vue.use(Router)
 
@@ -60,7 +64,11 @@ export const routes = [{
 		path: '',
 		name: 'DiscussZone',
 		component: DiscussZone
-	}],
+	}, {
+    path: 'postingDetail/:postId',
+    name: 'PostingDetail',
+    component: PostingDetail
+  }],
 	meta: {
 		name: '讨论区'
 	}
@@ -76,8 +84,28 @@ export const routes = [{
     name: '个人中心'
   }
 }, {
+  path: '/Admin',
+  name: 'Admin',
+  component: AdminHome,
+  children: [{
+    path: '',
+    component: AllPostings
+  }, {
+    path: 'managePostings',
+    name: 'ManagePostings',
+    component: AllPostings
+  }, {
+    path: 'inputPlaces',
+    name: 'InputPlaces',
+    component: InputPlaces
+  }]
+}, {
   path: '/Login',
   name: 'Login',
+  component: Login
+}, {
+  path: '/AdminLogin',
+  name: 'AdminLogin',
   component: Login
 }, {
   path: '/Register',

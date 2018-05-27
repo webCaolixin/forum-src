@@ -63,6 +63,7 @@
 
 <script>
   import $axios from '@/plugins/ajax'
+  import Bus from '@/plugins/eventBus'
 
 	export default {
 		data() {
@@ -95,9 +96,12 @@
             this.publishGameForm.endTime = this.publishGameForm.timeRange[1]
             let sendData = Object.assign({}, this.publishGameForm)
             delete sendData.timeRange
-            $axios.post('/game/v1/add', this.publishGameForm).then(({data}) => {
+            $axios.post('/game/v1/add', this.publishGameForm, {
+              headers: {'x-auth-token': sessionStorage.getItem('token') || ''}
+            }).then(({data}) => {
               if (data.statusCode === 200) {
                 this.$emit('closePubGameDialog')
+                Bus.$emit('closePubGameDialog')
                 this.$message.success(data.message)
               } else {
                 this.$message.error(data.message)

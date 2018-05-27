@@ -41,10 +41,16 @@ const store = new Vuex.Store({
 	actions: {
 		// 获取用户信息
 		login({state, commit}, loginData) {
-			console.log(loginData)
+			let url = ''
+			if (loginData.role && loginData.role === 'admin') {
+				url = '/admin/v1/login'
+				delete (loginData.role)
+			} else {
+				url = '/user/v1/login'
+			}
 			return new Promise((resolve, reject) => {
-				$axios.post('/user/v1/login', loginData).then(({data}) => {
-					if (data) {
+				$axios.post(url, loginData).then(({data}) => {
+					if (data.statusCode === 200) {
 						commit('SET_USER_INFO', data.data.uid)
 						resolve(data)
 					} else {

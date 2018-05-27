@@ -18,6 +18,7 @@
 						<el-input
 							v-model="loginForm.password"
 							placeholder="密码"
+							type="password"
 							@keyup.enter="login">
 							<template slot="prepend">
                 <i class="fa fa-lock" aria-hidden="true"></i>
@@ -59,9 +60,18 @@
 			login() {
 				this.$refs.loginForm.validate((valid) => {
 					if (valid) {
+						if (this.$route.name === 'AdminLogin') {
+							this.$set(this.loginForm, 'role', 'admin')
+						}
 						this.$store.dispatch('login', this.loginForm).then(data => {
-							sessionStorage.setItem('userUuid', data.data.uid)			// session同时存储id，手动刷新页面时用它重写vuex用户id
-							this.$router.push('/Home')                          	// 跳转到首页
+							// session同时存储id，手动刷新页面时用它重写vuex用户id
+							sessionStorage.setItem('userUuid', data.data.uid)
+							sessionStorage.setItem('token', data.token)
+							// 跳转到首页
+							this.$route.name === 'AdminLogin'
+								? this.$router.push('/Admin') : this.$router.push('/Home')
+						}).catch((err) => {
+							this.$message.warning(err.message)
 						})
 					} else {
 						this.$message.warning('请完善登录信息！')

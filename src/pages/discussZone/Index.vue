@@ -4,14 +4,18 @@
 			<el-row>
 				<el-col :span="4">
 					<el-row class="hotPostingTitle">
-            <span> | </span>热门帖子</el-row>
+          	<span> | </span>热门帖子
+         	</el-row>
 					<el-row class="hotPostingContent">
             <img v-if="hotPostingList.length===0" src="../../assets/images/no-data2.jpg" alt="No Data..."/>
 						<ul v-else class="hotPostingUl">
 							<li
 								class="hotPostItem"
-								v-for="(i, $index) in hotPostingList"
-								:key="$index+1">{{`${$index+1}. `+`${$index}`.repeat(30)}}</li>
+								v-for="i in hotPostingList"
+								:key="i.id"
+								@click="gotoDetail(i.id)">
+								{{i.title}}
+							</li>
 						</ul>
 					</el-row>
 				</el-col>
@@ -33,7 +37,7 @@
       width="700px"
       v-if="pubPostingDialog"
       :visible.sync="pubPostingDialog">
-      <publish-posting></publish-posting>
+      <publish-posting @closePubPosting="closePubPosting"></publish-posting>
     </el-dialog>
 	</section>
 </template>
@@ -69,13 +73,21 @@ export default {
 				this.$message.warning('登陆后才能发贴哦！')
 			}
 		},
+		// 关闭饭贴弹框
+		closePubPosting() {
+			this.getHostPostings()
+			this.pubPostingDialog = false
+		},
 		// 获取热门帖子
 		getHostPostings() {
 			$axios.get('/forum/v1/topTen').then(({data}) => {
-				if (data && data instanceof Array) {
-					this.hotPostingList = data
+				if (data && data.statusCode === 200) {
+					this.hotPostingList = data.data
 				}
 			})
+		},
+		gotoDetail(id) {
+			this.$router.push(`/DiscussZone/postingDetail/${id}`)
 		}
 	},
 	created() {

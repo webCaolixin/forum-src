@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {merge} from 'lodash'
+// import store from '../../store'
 
 axios.interceptors.request.use(config => {
   return config
@@ -58,12 +59,12 @@ export default {
       return res;
     })
   },
-  get (url, params, config) {
+  get (url, config) {
     let options = {};
     if (typeof config !== 'undefined') {
-      options = merge({}, globalOptions, {params: params}, config)
+      options = merge({}, globalOptions, config)
     } else {
-      options = merge({}, globalOptions, {params: params});
+      options = globalOptions;
     }
     return axios.get(convertURL(url), options).then((res) => {
       return res;
@@ -72,9 +73,9 @@ export default {
   delete (url, params, config) {
     let options = {};
     if (typeof config !== 'undefined') {
-      options = merge({}, globalOptions, {params: params}, config)
+      options = merge({}, globalOptions, config)
     } else {
-      options = merge({}, globalOptions, {params: params});
+      options = globalOptions;
     }
     return axios.delete(convertURL(url), options).then((res) => {
       return res;

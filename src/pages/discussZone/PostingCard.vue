@@ -5,21 +5,29 @@
       <div>暂无数据</div>
     </el-row>
     <el-row v-else>
-      <el-card class="postingCard" v-for="i in postingData" :key="i.id">
+      <el-card
+        class="postingCard"
+        v-for="i in postingData"
+        :key="i.id">
         <el-row>
           <el-col class="post-userPic-box" :span="4">
             <img class="post-user-pic" :src="i.picture" :alt="i.name"/>
           </el-col>
           <el-col :span="20">
             <el-row class="post-title">
-              标题：<span class="title-content" title="点击查看详情">{{i.title}}</span>
+              <span
+                class="title-content"
+                title="点击查看详情"
+                @click="gotoDetail(i.id)">
+                标题：{{i.title}}
+              </span>
             </el-row>
             <el-row class="post-footer">
               <el-col :span="12" class="comment-num">
-                <i class="fa fa-commenting-o" aria-hidden="true" title="评论数"> {{id.num}}</i>
+                <i class="fa fa-commenting-o" aria-hidden="true" title="评论数"> {{i.num}}</i>
               </el-col>
               <el-col :span="12" class="post-time">
-                <i class="fa fa-clock-o" aria-hidden="true" title="发帖时间"> {{'0000-00-00 00:00:00'}}</i>
+                <i class="fa fa-clock-o" aria-hidden="true" title="发帖时间"> {{formateDate(i.createTime)}}</i>
               </el-col>
             </el-row>
           </el-col>
@@ -34,7 +42,7 @@
           :page-sizes="[5, 10, 20]"
           :page-size="paginationOpt.pageSize"
           layout="total, sizes, prev, pager, next, jumper"
-          :total="postingData.length">
+          :total="totalCount">
         </el-pagination>
       </el-row>
     </el-row>
@@ -43,19 +51,24 @@
 
 <script>
   import $axios from '@/plugins/ajax'
+  import Bus from '@/plugins/eventBus'
+  import formateDate from '@/utils'
 
 	export default {
 		data() {
 			return {
+        totalCount: 0,
         postingData: [],
         paginationOpt: {
           pn: 1,
-          pageSize: 5,
-          navigatePages: null
+          pageSize: 5
         }
 			}
 		},
 		methods: {
+      formateDate(millSeconds) {
+        return formateDate(millSeconds)
+      },
       handleSizeChange(currentSize) {
         this.paginationOpt.pageSize = currentSize
         this.getPostingData()
@@ -64,16 +77,26 @@
         this.paginationOpt.pn = currentPage
         this.getPostingData()
       },
+      // 获取所有帖子列表
       getPostingData() {
         $axios.post('/forum/v1/list', this.paginationOpt).then(({data}) => {
           if (data.statusCode === 200) {
             this.postingData = data.data.list
+            this.totalCount = data.data.total
           }
         })
+      },
+      gotoDetail(id) {
+        this.$router.push(`/DiscussZone/postingDetail/${id}`)
       }
 		},
 		created() {
+      // 获取所有帖子列表
 		  this.getPostingData()
+      // 发帖完成，刷新列表
+      Bus.$on('closePubPosting', () => {
+        this.getPostingData()
+      })
 		}
 	}
 </script>
@@ -91,6 +114,10 @@
       margin-bottom 30px
   .postingCard
     margin-bottom 12px
+    &:hover
+      cursor pointer
+      border 1px solid #b3d8ff
+      box-shadow 3px 2px 5px 0 rgba(64, 158, 255, 0.3)
     .post-userPic-box
       text-align center
       .post-user-pic

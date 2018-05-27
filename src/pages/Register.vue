@@ -106,9 +106,14 @@
 							username: this.registerForm.username,
 							password: this.registerForm.password
 						}
-						$axios.post('/user/v1/register', registeData).then(({data}) => {
+						$axios.post('/user/v1/register', registeData, {
+          		headers: {'x-auth-token': sessionStorage.getItem('token') || ''}
+        		}).then(({data}) => {
 							if (data.statusCode === 200) {
 								this.$store.commit('SET_USER_INFO', data.data.uid)
+								// session同时存储id，手动刷新页面时用它重写vuex用户id
+								sessionStorage.setItem('userUuid', data.data.uid)
+								sessionStorage.setItem('token', data.token)
 								this.$router.push('/Home')
 							} else {
 								this.$message.error(data.message)
